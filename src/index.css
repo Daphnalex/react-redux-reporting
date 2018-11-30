@@ -1,14 +1,107 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Open Sans", regular;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #dddfd4;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1{
+  font-size: 2vw;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1vw;
+  padding-top:80px;
+  padding-bottom: 80px;
+  font-family: 'Open Sans', sans-serif;
+  margin: 0px;
+}
+
+h1 span.bigTitle{
+  font-size: 6vw;
+  margin-bottom: 10vw;
+  letter-spacing: 3vw;
+  text-align: center;
+}
+
+h2{
+  font-size: 18px;
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  margin-bottom: 20px;
+}
+
+h5{
+  font-weight: bold;
+}
+
+hr.bigHr{
+  height: 100px;
+  background-color: #3fb0ac;
+  border: 0px;
+}
+
+div.homePage{
+  background-color: #fff;
+}
+
+.reportingContent{
+  margin: 40px 10% 20px 10%;
+}
+
+.newBloc{
+  text-align: left;
+  position: relative;
+  margin-top: 50px;
+  padding:25px 20px 50px 20px;
+  background-color: #fae596;
+}
+
+[type="radio"]:not(:checked)+label, [type="radio"]:checked+label{
+  font-size: 14px;
+  color: black;
+}
+
+.dataFilter{
+  margin-bottom: 20px;
+}
+
+div.newBloc button{
+  margin: 0 auto !important;
+  display: block;
+  top: 25px;
+}
+
+.pie-chart-label{
+  font-size: 14px !important;
+}
+g.tick text{
+  font-size: 14px !important;
+}
+
+div.elementReporting{
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+span.selectChoiceElement{
+  margin-right: 25px;
+}
+
+.tooltip{
+  display: block;
+  top:0px;
+  background-color: #f1f0f1;
+  color: grey;
+  text-align: center;
+}
+
+.x.axis text{
+  fill: white !important;
 }
