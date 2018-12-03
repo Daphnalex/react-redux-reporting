@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import {PieChart} from 'react-easy-chart';
+
 import ToolTip from './ToolTips';
 import Legend from './Legend';
 import config from '../config/base';
+import Filters from './FiltersComponent';
 
+import {setDateFilterAction, setScopeFilterAction} from '../actions/filtersActions';
 
+import {connect} from "react-redux";
 
-export default class PieChartComponent extends Component {
+class PieChartComponent extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
-        item: this.props.item,
         loading: true,
         data: [],
         showToolTip: false,
@@ -40,8 +43,8 @@ export default class PieChartComponent extends Component {
   }
 
   componentDidMount = () => {
-    console.log('item', this.state.item);
-    fetch(`${config.root}/${this.props.testDataChoice(this.props.item.data)}/${this.props.testFilterDate(this.props.item.filterDate)}`,{
+    console.log('item fetch', this.props.item);
+    fetch(`${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`,{
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
@@ -55,8 +58,8 @@ export default class PieChartComponent extends Component {
         if (json) {
             var data = json.map(item => { return {value: item.result, key: item.id, color: this.props.getRandomColor()} });
             var config = data.map(item => { return {color: item.color} });
-            console.log('CONFIG COLOR',config)
-            console.log('DATA',data);
+            //console.log('CONFIG COLOR',config)
+            //console.log('DATA',data);
             this.setState({
                 loading: false,
                 data: data,
@@ -68,9 +71,9 @@ export default class PieChartComponent extends Component {
   }  
 
   mouseOverHandler = (d, e) => {
-    console.log('mouse over');
-    console.log('d',d);
-    console.log('e',e);
+    //console.log('mouse over');
+    //console.log('d',d);
+    //console.log('e',e);
     this.setState({
       showToolTip: true,
       top: e.y,
@@ -78,25 +81,25 @@ export default class PieChartComponent extends Component {
       value: d.value,
       key: d.data.key
     },function(){
-        console.log('post over',this.state.key)
+        //console.log('post over',this.state.key)
     })
   }
 
   mouseMoveHandler = (d, e) => {
-    console.log('mouse move',e);
-    console.log("DDD",d)
+    //console.log('mouse move',e);
+    //console.log("DDD",d)
     if (this.state.showToolTip) {
       this.setState({top: e.y, left: e.x});
     }
   }
 
   mouseOutHandler = () => {
-    console.log('mouse Out');
+    //console.log('mouse Out');
     this.setState({showToolTip: false});
   }
 
   createTooltip = () => {
-    console.log("createTooltip function")
+    //console.log("createTooltip function")
     if (this.state.showToolTip) {
         return (
         <ToolTip
@@ -120,7 +123,7 @@ export default class PieChartComponent extends Component {
   }
 
   render() {
-      console.log('type of value',typeof(this.state.value))
+      //console.log("PIECHART",this.props.item)
       
       return(
           <div>
@@ -128,8 +131,9 @@ export default class PieChartComponent extends Component {
                 <div>Loading...</div>
                 :
                 <div>
-                    <h2>{this.props.item.data} {this.props.item.filterDate.toLowerCase()}</h2>
-                    <PieChart id={this.state.item.id}
+                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                    <Filters item={this.props.item} filters={this.props.filters} setDateFilter={this.props.setDateFilter} setScopeFilter={this.props.setScopeFilter}/>
+                    <PieChart id={this.props.item.id}
                     data={this.state.data} 
                     innerHoleSize={200}
                     mouseOverHandler = {this.mouseOverHandler}
@@ -154,3 +158,24 @@ export default class PieChartComponent extends Component {
       )
   }
 }
+
+const mapStateToProps = (state) => {
+    //console.log('FILTERS',state.filters)
+    return {
+        filters: state.filters
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setDateFilter: (dateFilter) => {
+            dispatch(setDateFilterAction(dateFilter));
+        },
+        setScopeFilter: (scopeFilter) => {
+            dispatch(setScopeFilterAction(scopeFilter)); 
+        }
+    }
+}
+
+export default connect (mapStateToProps, mapDispatchToProps)(PieChartComponent);
+

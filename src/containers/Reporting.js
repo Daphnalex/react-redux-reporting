@@ -10,32 +10,10 @@ class ReportingList extends Component {
     
     constructor(props){
         super(props);
-        console.log('props ReportingList',props.itemsReporting);
+        //console.log('props ReportingList',props.itemsReporting);
     }
 
-    testDataChoice = (data) => {
-        switch(data){
-            case "Connexions":
-              return 'connexion';
-            case "Licences actives":
-              return 'license-active';
-            default:
-              return "";
-        }
-    }
-  
-    testGraphChoice = (graph) => {
-      switch(graph){
-          case "Camembert":
-            return 'PieChart';
-          case "Graphique en barre":
-            return 'BarChart';
-          case "Tableau":
-            return "ArrayComponent";
-          default:
-            return "";
-      }
-    }
+    
 
     testFilterDate = (date) => {
         switch(date){
@@ -71,8 +49,8 @@ class ReportingList extends Component {
                     <Row>
                         {this.props.itemsReporting.map(item =>
                             <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                {console.log('REPORTING', item)}
-                                {React.createElement(components[`${this.testGraphChoice(item.graph)}`], {item: item, testFilterDate: this.testFilterDate, testDataChoice: this.testDataChoice, getRandomColor: this.getRandomColor} , null)}
+                                
+                                {React.createElement(components[`${item.graphFetch}`], {item: item, getRandomColor: this.getRandomColor} , null)}
                             </Col>
                         )}
                     </Row>

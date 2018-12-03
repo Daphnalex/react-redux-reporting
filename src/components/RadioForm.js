@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class RadioForm extends Component {
 
   onChangeElement(){
-    console.log("le bouton change");
+    //console.log("le bouton change");
   }
     
 

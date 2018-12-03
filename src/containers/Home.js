@@ -8,7 +8,7 @@ import ChoicesBloc from '../components/ChoicesBloc';
 import Reporting from './Reporting';
 
 import { connect } from 'react-redux';
-import { addElementReportingAction, fetchElementReportingAction } from '../actions/itemsActions';
+import { addElementReportingAction, updateElementReportingAction } from '../actions/itemsActions';
 
 class Home extends Component {
 
@@ -20,7 +20,7 @@ class Home extends Component {
   }
 
   onClickButton = () =>{
-      console.log('button clic');
+      //console.log('button clic');
       this.setState({
           showAddingBloc: !this.state.showAddingBloc
       })
@@ -56,14 +56,14 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-    console.log('mapStateToProps',state);
+    //console.log('mapStateToProps',state);
     return({
         itemsReporting: state.itemsReporting
     })
 }
 
 const mapDispatchToProps = (dispatch) => {
-    console.log('dispatch',dispatch)
+    //console.log('dispatch',dispatch)
     return {
         addElementReporting: (elementReporting) => {
             dispatch(addElementReportingAction(elementReporting));

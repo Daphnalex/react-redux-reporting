@@ -37,6 +37,15 @@ h2{
   margin-bottom: 20px;
 }
 
+h3{
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Open Sans', sans-serif;
+  margin-bottom: 20px;
+}
+
 h5{
   font-weight: bold;
 }
@@ -104,4 +113,12 @@ span.selectChoiceElement{
 
 .x.axis text{
   fill: white !important;
+}
+
+table.arrayComponent th, table.arrayComponent td{
+  text-align: center;
+}
+
+div.filter{
+  text-align: left;
 }

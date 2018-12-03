@@ -15,7 +15,7 @@ const toolTipStyles = {
 const ToolTip = (props) => (
    
   <div className="tooltip-container">
-     {console.log('PROPS ICI',props)}
+    
     <Style scopeSelector=".tooltip-container" rules={toolTipStyles} />
     <div className="tooltip" style={{ top: props.top, left: props.left }}>
         {props.value}

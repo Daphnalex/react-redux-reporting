@@ -7,9 +7,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from 'redux-thunk';
 
 import { itemsReportingReducer } from './reducers/itemsReportingReducer';
+import { filtersReportingReducer } from './reducers/filtersReportingReducer';
 
 const rootReducer = combineReducers({
-    itemsReporting: itemsReportingReducer
+    itemsReporting: itemsReportingReducer,
+    filters: filtersReportingReducer
 });
 
 const store = createStore(
