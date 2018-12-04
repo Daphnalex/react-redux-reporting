@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 import {BarChart} from 'react-easy-chart';
 import ToolTip from './ToolTips';
 import Legend from './Legend';
-
 import config from '../config/base';
 
+import {connect} from 'react-redux';
 
+import {apiFetchData, dataIsLoading, data, dataHasErrored} from '../actions/fetchActions';
 
-export default class BarChartComponent extends Component {
+class BarChartComponent extends Component {
 
   constructor(props){
     super(props);
     this.state = {
         item: this.props.item,
-        loading: true,
-        data: [],
         showToolTip: false,
         top: 0,
         left: 0,
@@ -28,31 +27,22 @@ export default class BarChartComponent extends Component {
 
   }
 
-  componentDidMount(){
-     fetch(`${config.root}/${this.props.testDataChoice(this.props.item.data)}/${this.props.testFilterDate(this.props.item.filterDate)}`,{
-         headers: {
-             'Content-Type': 'application/json',
-             'Access-Control-Allow-Origin': '*'
-         }
-     })
-        .then(res => 
-            res.json())
-        .then(json => {
-            
-            if (json) {
-                var data = json.map(item => { return {y: item.result, x: item.id, color: this.props.getRandomColor()} });
-                var config = data.map((item) => { return {color: item.color} })
-                
-                
-                this.setState({
-                    loading: false,
-                    data: data,
-                    config: config
-                })
-            }
-        })
-        .catch(error => console.log("error", error))
+  componentDidMount = () => {
+    var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
+    this.props.apiFetchData(url);
+
   }  
+
+  transformData = (data) => {
+      //console.log('UPDATE',data);
+      var data = data.map((item)=>{
+            console.log('dans la boucle',item)
+          return {x: item.id, y: item.result}
+      })
+      //console.log('DATA TRANSFORME',data);
+      return data;
+  }
+
 
   mouseOverHandler(d, e) {
     this.setState({
@@ -76,23 +66,23 @@ export default class BarChartComponent extends Component {
   render() {
       return(
           <div>
-              { this.state.loading ?
+              { this.props.dataIsLoading ?
                 <div>Loading...</div>
                 :
                 <div>
-                    <h2>{this.props.item.data} {this.props.item.filterDate.toLowerCase()}</h2>
+                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
                     <BarChart id={this.state.item.id}
                         axes
                         grid
                         colorBars
                         height={396}
                         width={500}
-                        data={this.state.data}
+                        data={this.transformData(this.props.data)}
                         mouseOverHandler={this.mouseOverHandler}
                         mouseOutHandler={this.mouseOutHandler}
                         mouseMoveHandler={this.mouseMoveHandler}
                         />
-                    <Legend data={this.state.data} dataId={this.state.key} horizontal config={this.state.config} />
+                    <Legend data={this.transformData(this.props.data)} dataId={this.state.key} horizontal config={this.state.config} />
                     {(this.state.showToolTip) ?
                         <ToolTip
                             top={this.state.top}
@@ -109,3 +99,22 @@ export default class BarChartComponent extends Component {
       )
   }
 }
+
+const mapStateToProps = (state) => {
+    console.log("STATE",state);
+    return {
+        dataIsLoading: state.dataIsLoading,
+        dataHasErrored: state.dataHasErrored,
+        data: state.data
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        apiFetchData: (data) => {
+            dispatch(apiFetchData(data));
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (BarChartComponent);

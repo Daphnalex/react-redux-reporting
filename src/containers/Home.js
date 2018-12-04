@@ -8,7 +8,7 @@ import ChoicesBloc from '../components/ChoicesBloc';
 import Reporting from './Reporting';
 
 import { connect } from 'react-redux';
-import { addElementReportingAction, updateElementReportingAction } from '../actions/itemsActions';
+import { addElementReportingAction } from '../actions/itemsActions';
 
 class Home extends Component {
 

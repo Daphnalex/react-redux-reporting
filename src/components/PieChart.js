@@ -6,7 +6,7 @@ import Legend from './Legend';
 import config from '../config/base';
 import Filters from './FiltersComponent';
 
-import {setDateFilterAction, setScopeFilterAction} from '../actions/filtersActions';
+import {apiFetchData, dataIsLoading, data, dataHasErrored} from '../actions/fetchActions';
 
 import {connect} from "react-redux";
 
@@ -16,8 +16,6 @@ class PieChartComponent extends Component {
     super(props);
 
     this.state = {
-        loading: true,
-        data: [],
         showToolTip: false,
         top: 0,
         left: 0,
@@ -43,32 +41,20 @@ class PieChartComponent extends Component {
   }
 
   componentDidMount = () => {
-    console.log('item fetch', this.props.item);
-    fetch(`${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`,{
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        }
-     })
-    .then(res => 
-        res.json())
-    .then(json => {
-        console.log('JSON',json);
-            
-        if (json) {
-            var data = json.map(item => { return {value: item.result, key: item.id, color: this.props.getRandomColor()} });
-            var config = data.map(item => { return {color: item.color} });
-            //console.log('CONFIG COLOR',config)
-            //console.log('DATA',data);
-            this.setState({
-                loading: false,
-                data: data,
-                config: config
-            })
-        }
-    })
-    .catch(error => console.log("error", error));
+    var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
+    this.props.apiFetchData(url);
+
   }  
+
+  transformData = (data) => {
+      console.log('UPDATE',data);
+      var data = data.map((item)=>{
+            console.log('dans la boucle',item)
+          return {key: item.id, value: item.result}
+      })
+      console.log('DATA TRANSFORME',data);
+      return data;
+  }
 
   mouseOverHandler = (d, e) => {
     //console.log('mouse over');
@@ -123,56 +109,63 @@ class PieChartComponent extends Component {
   }
 
   render() {
-      //console.log("PIECHART",this.props.item)
-      
+       console.log("loading data",this.props.dataIsLoading);
+       console.log('data in render',this.props.data)
       return(
           <div>
-              { this.state.loading ?
+              { this.props.dataIsLoading ?
                 <div>Loading...</div>
                 :
                 <div>
-                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
-                    <Filters item={this.props.item} filters={this.props.filters} setDateFilter={this.props.setDateFilter} setScopeFilter={this.props.setScopeFilter}/>
-                    <PieChart id={this.props.item.id}
-                    data={this.state.data} 
-                    innerHoleSize={200}
-                    mouseOverHandler = {this.mouseOverHandler}
-                    mouseOutHandler = {this.mouseOutHandler}
-                    mouseMoveHandler = {this.mouseMoveHandler}
-                    padding={10}
-                    styles={this.styles}
-                    />
-                    <Legend data={this.state.data} dataId={this.state.key} horizontal config={this.state.config} />
-                    {(this.state.showToolTip) ?
-                        <ToolTip
-                            top={this.state.top}
-                            left={this.state.left}
-                            title={this.state.key}
-                            value={this.state.value}
-                            />
-                        :
-                        <div></div>}
+                    {(this.props.data.length !== 0) ?
+                    <div>
+                        <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                        <Filters item={this.props.item} />
+                        <PieChart id={this.props.item.id}
+                        data={this.transformData(this.props.data)} 
+                        innerHoleSize={200}
+                        mouseOverHandler = {this.mouseOverHandler}
+                        mouseOutHandler = {this.mouseOutHandler}
+                        mouseMoveHandler = {this.mouseMoveHandler}
+                        padding={10}
+                        styles={this.styles}
+                        />
+                        <Legend data={this.transformData(this.props.data)} dataId={this.state.key} horizontal config={this.state.config} />
+                        {(this.state.showToolTip) ?
+                            <ToolTip
+                                top={this.state.top}
+                                left={this.state.left}
+                                title={this.state.key}
+                                value={this.state.value}
+                                />
+                            :
+                            <div></div>}
+                    </div>
+                    :
+                    <div>
+                        Pas de données
+                    </div>
+                   }
                 </div>
-              }
+               }
           </div>
       )
   }
 }
 
 const mapStateToProps = (state) => {
-    //console.log('FILTERS',state.filters)
+    console.log("STATE",state);
     return {
-        filters: state.filters
+        dataIsLoading: state.dataIsLoading,
+        dataHasErrored: state.dataHasErrored,
+        data: state.data
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setDateFilter: (dateFilter) => {
-            dispatch(setDateFilterAction(dateFilter));
-        },
-        setScopeFilter: (scopeFilter) => {
-            dispatch(setScopeFilterAction(scopeFilter)); 
+        apiFetchData: (data) => {
+            dispatch(apiFetchData(data));
         }
     }
 }

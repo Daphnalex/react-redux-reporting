@@ -1,6 +1,6 @@
 import { ADD_ITEM, UPDATE_ITEM } from "../actions/itemsActions";
 
-export const itemsReportingReducer = (state = [], action) => {
+export const itemsReporting = (state = [], action) => {
     switch(action.type){
         case ADD_ITEM:
             //console.log('add item',action);
@@ -12,10 +12,10 @@ export const itemsReportingReducer = (state = [], action) => {
             console.log('update item n°',itemId);
             return state.map(item => {
                 if(item.id !== itemId){
-                    console.log('trouvé',item)
-                    return item;
+                    console.log('action in update',action.payload)
+                    return action.payload;
                 }
-                return action.payload;
+                
             })
         default:
             return state;

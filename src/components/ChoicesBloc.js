@@ -5,6 +5,8 @@ import {Row, Col} from "react-materialize";
 import RadioForm from "./RadioForm";
 import ClassicalButton from "./ClassicalButton";
 
+import config from '../config/base';
+
 export default class ChoicesBloc extends Component {
     constructor(props){
         super(props);
@@ -57,6 +59,7 @@ export default class ChoicesBloc extends Component {
       var dataFetch = this.testDataChoice(data);
       var graphFetch = this.testGraphChoice(graph);
       const itemReporting = {
+          urlFetchdb: `${config.root}/${dataFetch}/year`,
           dataFetch: dataFetch,
           graphFetch: graphFetch,
           filterDate: "year",

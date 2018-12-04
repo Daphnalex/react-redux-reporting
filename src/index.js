@@ -3,21 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { Provider } from "react-redux";
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from 'redux-thunk';
 
-import { itemsReportingReducer } from './reducers/itemsReportingReducer';
-import { filtersReportingReducer } from './reducers/filtersReportingReducer';
+import configureStore from './store/configureStore';
 
-const rootReducer = combineReducers({
-    itemsReporting: itemsReportingReducer,
-    filters: filtersReportingReducer
-});
 
-const store = createStore(
-    rootReducer,
-    applyMiddleware(thunk),
-)
+const store = configureStore();
 
 window.store = store;
 

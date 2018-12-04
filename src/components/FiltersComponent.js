@@ -3,10 +3,9 @@ import RadioForm from './RadioForm';
 import ClassicalButton from './ClassicalButton';
 import config from '../config/base.js';
 
-
-
 import {Row, Col} from 'react-materialize';
 
+import {updateElementReportingAction} from '../actions/itemsActions';
 import {connect} from 'react-redux';
 
 class Filters extends Component {
@@ -21,19 +20,39 @@ class Filters extends Component {
     //console.log('this.props.item dans FILTERS',this.props.item);
   }
 
+  testFilterDate = (date) => {
+    switch(date){
+      case "Par année":
+        return "year";
+      case "Par mois":
+        return "month";
+      case "Par jour":
+        return "day";
+    }
+  }
+
   handleChangeDate = (date) => {
-    console.log('dans la vue on change de date ',date);
-    this.setState({loadComponent: true});
-    this.props.setDateFilter(date);
+    const itemReporting = {
+      url: `${config.root}/${this.props.item.dataFetch}/${this.testFilterDate(date)}`,
+      dataFetch: this.props.item.dataFetch,
+      graphFetch: this.props.item.graphFetch,
+      filterDate: this.testFilterDate(date),
+      filterScope: this.props.item.filterScope,
+      id: Date.now(),
+      describeElement: {
+          data: this.props.item.describeElement.data,
+          graph: this.props.item.describeElement.graph,
+          filterDate: date,
+          filterScope: this.props.item.describeElement.filterScope
+      }
+    }
+    this.props.updateElementReporting(itemReporting);
   }
 
 
 
   render() {
-    console.log('FILTERS COMPONENTS', this.props.filters)
-    if (this.props.filters.dateFilter !=='') {
-      this.updateDateFilter()
-    };
+    
     return (
       <Row className='filter'>
         <h5>Filter ce composant par :</h5>
@@ -56,6 +75,13 @@ class Filters extends Component {
 }
 
 
+const mapDispatchToProps = (dispatch) => {
+  //console.log('dispatch',dispatch)
+  return {
+    updateElementReporting: (elementReporting) => {
+      dispatch(updateElementReportingAction(elementReporting));
+    }
+  }
+}
 
-
-export default Filters;
+export default connect(undefined,mapDispatchToProps) (Filters);
