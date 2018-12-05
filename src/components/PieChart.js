@@ -21,12 +21,15 @@ class PieChartComponent extends Component {
         left: 0,
         value: 0,
         key: "",
-        config: []
+        config: [],
+        id: this.props.item.id
     }
-
+    console.log('CONSTRUCTOR ID',this.state.id)
     this.mouseOverHandler = this.mouseOverHandler.bind(this);
     this.mouseOutHandler = this.mouseOutHandler.bind(this);
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
+    
+
 
     this.styles = {
         '.pie-chart-lines': {
@@ -40,11 +43,40 @@ class PieChartComponent extends Component {
       };
   }
 
-  componentDidMount = () => {
+  componentDidMount(){
     var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
-    this.props.apiFetchData(url);
-
+    var id = this.props.item.id;
+    console.log('DID MOUNT')
+    if (this.props.data.length === 0){
+        this.props.apiFetchData(url, id);
+    }
+    for(let i=0;i<this.props.data.length;i++){
+        console.log('boucle FOR')
+        if (this.props.data[i].id === this.props.item.id){
+            console.log('ILS SONT EGAUX');
+            i = this.props.data.length;
+        } else {
+            console.log('PAS EGAUX')
+            if (i === this.props.data.length - 1){
+                console.log('DERNIER ELEMENT TESTE');
+                this.props.apiFetchData(url, id);
+            } else {
+                console.log('I AUGMENTE');
+                i++;
+            }
+        }
+        
+    }
+    var data = this.props.data.filter((obj,pos,arr) =>{
+        return arr.map(mapObj => mapObj[id]).indexOf(obj[id]) === pos;
+    });
+    console.log('DATA AFTER TRAITEMENT',data);
   }  
+
+  componentDidUpdate(){
+      console.log('DID UPDATE PIE');
+  }
+
 
   transformData = (data) => {
       console.log('UPDATE',data);
@@ -109,46 +141,43 @@ class PieChartComponent extends Component {
   }
 
   render() {
-       console.log("loading data",this.props.dataIsLoading);
-       console.log('data in render',this.props.data)
+       console.log('data in render',this.props.data);
       return(
           <div>
-              { this.props.dataIsLoading ?
-                <div>Loading...</div>
-                :
-                <div>
-                    {(this.props.data.length !== 0) ?
-                    <div>
-                        <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
-                        <Filters item={this.props.item} />
-                        <PieChart id={this.props.item.id}
-                        data={this.transformData(this.props.data)} 
-                        innerHoleSize={200}
-                        mouseOverHandler = {this.mouseOverHandler}
-                        mouseOutHandler = {this.mouseOutHandler}
-                        mouseMoveHandler = {this.mouseMoveHandler}
-                        padding={10}
-                        styles={this.styles}
-                        />
-                        <Legend data={this.transformData(this.props.data)} dataId={this.state.key} horizontal config={this.state.config} />
-                        {(this.state.showToolTip) ?
-                            <ToolTip
-                                top={this.state.top}
-                                left={this.state.left}
-                                title={this.state.key}
-                                value={this.state.value}
-                                />
-                            :
-                            <div></div>}
-                    </div>
-                    :
-                    <div>
-                        Pas de données
-                    </div>
-                   }
+            {(this.props.data.map((data)=> (
+                <div key={data.id}>
+                    {(data.id === this.props.item.id) ?
+                        <div>
+                            {data.id} =
+                            {this.props.item.id} ?
+                            {/* <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                            <Filters item={this.props.item} />
+                            <PieChart id={this.props.item.id}
+                            data={this.transformData(this.props.data.array)} 
+                            innerHoleSize={200}
+                            mouseOverHandler = {this.mouseOverHandler}
+                            mouseOutHandler = {this.mouseOutHandler}
+                            mouseMoveHandler = {this.mouseMoveHandler}
+                            padding={10}
+                            styles={this.styles}
+                            />
+                            <Legend data={this.transformData(this.props.data.array)} dataId={this.state.key} horizontal config={this.state.config} />
+                            {(this.state.showToolTip) ?
+                                <ToolTip
+                                    top={this.state.top}
+                                    left={this.state.left}
+                                    title={this.state.key}
+                                    value={this.state.value}
+                                    />
+                                :
+                                <div></div>} */}
+                          </div>
+                        :
+                          <div>Pas de composant portant cet identifiant</div>
+                    }
                 </div>
-               }
-          </div>
+            )))}
+          </div>  
       )
   }
 }
@@ -156,16 +185,14 @@ class PieChartComponent extends Component {
 const mapStateToProps = (state) => {
     console.log("STATE",state);
     return {
-        dataIsLoading: state.dataIsLoading,
-        dataHasErrored: state.dataHasErrored,
         data: state.data
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        apiFetchData: (data) => {
-            dispatch(apiFetchData(data));
+        apiFetchData: (data,id) => {
+            dispatch(apiFetchData(data,id));
         }
     }
 }

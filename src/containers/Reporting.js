@@ -6,6 +6,8 @@ import PieChart from '../components/PieChart';
 import BarChart from '../components/BarChart';
 import ArrayComponent from '../components/Array';
 
+import {connect} from 'react-redux';
+
 class ReportingList extends Component {
     
     constructor(props){
@@ -46,13 +48,18 @@ class ReportingList extends Component {
         return(
             <Row>
                 {this.props.itemsReporting.length !== 0 ?
-                    <Row>
-                        {this.props.itemsReporting.map(item =>
-                            <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                
-                                {React.createElement(components[`${item.graphFetch}`], {item: item, getRandomColor: this.getRandomColor} , null)}
-                            </Col>
-                        )}
+                    <Row>{this.props.dataIsLoading ?
+                        <div>Chargement des données...</div>
+                    :
+                        <div>
+                            {this.props.itemsReporting.map(item =>
+                                <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
+                                    {React.createElement(components[`${item.graphFetch}`], {item: item, getRandomColor: this.getRandomColor} , null)}
+                                </Col>
+                            )}
+                        </div>
+                    }
+                        
                     </Row>
                     :
                     <Row>Pas d'éléments à afficher</Row>
@@ -62,4 +69,12 @@ class ReportingList extends Component {
     }
     
 }
-export default ReportingList;
+
+const mapStateToProps = (state) => {
+    console.log("STATE",state);
+    return {
+        dataIsLoading: state.dataIsLoading
+    }
+}
+
+export default connect(mapStateToProps) (ReportingList);

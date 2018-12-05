@@ -22,8 +22,7 @@ export const data = (state = [], action) => {
     console.log('data in reducer',action)
     switch(action.type){
         case DATA_FETCH_SUCCESS:
-            console.log('data fetch success reducer')
-            return action.data;
+            return [...state, action.data];
         default:
             return state;
     }

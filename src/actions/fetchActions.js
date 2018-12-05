@@ -17,15 +17,15 @@ export const dataIsLoading = (bool) => {
     }
 }
 
-export const dataIsSuccess = (data) => {
+export const dataIsSuccess = (id, data) => {
     console.log("dans le action",data)
     return {
         type: DATA_FETCH_SUCCESS,
-        data: data
+        data: {array: data, id: id}
     }
 }
 
-export const apiFetchData = (url) => {
+export const apiFetchData = (url,id) => {
     return (dispatch) => {
         dispatch(dataIsLoading(true));
         fetch(url)
@@ -40,7 +40,7 @@ export const apiFetchData = (url) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log("DATA FETCH",data);
-                dispatch(dataIsSuccess(data));
+                dispatch(dataIsSuccess(id,data));
             })
             .catch(() => dispatch(dataHasErrored(true)));
     }
