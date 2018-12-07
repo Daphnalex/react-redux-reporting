@@ -26,7 +26,26 @@ class Home extends Component {
       })
   }
 
+  componentDidMount(){
+    console.log('DID MOUNT HOME')
+  }  
+
+  componentWillMount(){
+      console.log('WILL MOUNT HOME')
+  }
+
+  componentDidUpdate(){
+      console.log('DID UPDATE HOME')
+  }
+
+  componentWillReceiveProps(nextProps){
+      console.log('NEXTPROPS HOME',nextProps);
+      
+      
+  }
+
   render() {
+      console.log('ITEMS HOME',this.props.itemsReporting)
     return (
         <Row className="homePage">
             <Row className="titleHome">
@@ -56,7 +75,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-    //console.log('mapStateToProps',state);
+    console.log('mapStateToProps',state);
     return({
         itemsReporting: state.itemsReporting
     })

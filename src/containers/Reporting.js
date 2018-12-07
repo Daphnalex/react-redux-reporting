@@ -6,13 +6,16 @@ import PieChart from '../components/PieChart';
 import BarChart from '../components/BarChart';
 import ArrayComponent from '../components/Array';
 
-import {connect} from 'react-redux';
 
 class ReportingList extends Component {
     
     constructor(props){
         super(props);
         //console.log('props ReportingList',props.itemsReporting);
+        this.state = {
+            config: []
+        }
+        
     }
 
     
@@ -37,6 +40,34 @@ class ReportingList extends Component {
         }
         return color;
     }
+
+    componentDidMount(){
+        console.log('DID MOUNT REPORTING')
+      }  
+    
+      componentWillMount(){
+        console.log('WILL MOUNT REPORTING');
+        this.config = [];
+        for(let i=0; i < 100; i++){
+            var color = this.getRandomColor();
+            console.log('récupérer la couleur',color);
+            this.config = [...this.config, color];
+        }
+        this.setState({
+            config: this.config
+        })
+        console.log('config constructor',this.config);
+      }
+    
+      componentDidUpdate(){
+          console.log('DID UPDATE REPORTING')
+      }
+    
+      componentWillReceiveProps(nextProps){
+          console.log('NEXTPROPS REPORTING',nextProps);
+          
+          
+      }
     
     render(){
         const components = {
@@ -45,21 +76,16 @@ class ReportingList extends Component {
             ArrayComponent: ArrayComponent
             
         };
+        console.log('RENDER REPORTING',this.state.config)
         return(
             <Row>
                 {this.props.itemsReporting.length !== 0 ?
-                    <Row>{this.props.dataIsLoading ?
-                        <div>Chargement des données...</div>
-                    :
-                        <div>
-                            {this.props.itemsReporting.map(item =>
-                                <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                    {React.createElement(components[`${item.graphFetch}`], {item: item, getRandomColor: this.getRandomColor} , null)}
-                                </Col>
-                            )}
-                        </div>
-                    }
-                        
+                   <Row>
+                        {this.props.itemsReporting.map(item =>
+                            <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
+                                {React.createElement(components[`${item.graphFetch}`], {item: item, config: this.state.config} , null)}
+                            </Col>
+                        )}
                     </Row>
                     :
                     <Row>Pas d'éléments à afficher</Row>
@@ -70,11 +96,5 @@ class ReportingList extends Component {
     
 }
 
-const mapStateToProps = (state) => {
-    console.log("STATE",state);
-    return {
-        dataIsLoading: state.dataIsLoading
-    }
-}
 
-export default connect(mapStateToProps) (ReportingList);
+export default ReportingList;

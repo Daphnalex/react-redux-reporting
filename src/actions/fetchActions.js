@@ -10,11 +10,15 @@ export const dataHasErrored = (bool) =>{
     }
 }
 
-export const dataIsLoading = (bool) => {
-    return {
-        type: DATA_IS_LOADING,
-        isLoading: bool
-    }
+export const dataIsLoading = (bool,id) => {
+    console.log('ID dans dataIsLoading',id)
+    if (id !== undefined){
+        console.log('on récupère toujours id',id);
+        return {
+            type: DATA_IS_LOADING,
+            isLoading: {bool: bool, id: id}
+        }
+    } 
 }
 
 export const dataIsSuccess = (id, data) => {
@@ -26,15 +30,17 @@ export const dataIsSuccess = (id, data) => {
 }
 
 export const apiFetchData = (url,id) => {
+    console.log('entre dans apiFetchData',id)
     return (dispatch) => {
-        dispatch(dataIsLoading(true));
+        console.log('on passe la valeur isLoading à true et ',id)
+        dispatch(dataIsLoading(true,id));
         fetch(url)
             .then((response) => {
                 if (!response.ok){
                     throw Error(response.statusText);
                 }
                 console.log('ICI FETCH')
-                dispatch(dataIsLoading(false));
+                dispatch(dataIsLoading(false,id));
                 return response;
             })
             .then((response) => response.json())

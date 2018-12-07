@@ -16,21 +16,21 @@ class PieChartComponent extends Component {
     super(props);
 
     this.state = {
+        data: [],
         showToolTip: false,
         top: 0,
         left: 0,
         value: 0,
         key: "",
-        config: [],
-        id: this.props.item.id
+        id: this.props.item.id,
+        config: this.props.config,
+        configComponent: []
     }
     console.log('CONSTRUCTOR ID',this.state.id)
     this.mouseOverHandler = this.mouseOverHandler.bind(this);
     this.mouseOutHandler = this.mouseOutHandler.bind(this);
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-    
-
-
+    console.log('LES COULEURS DU STATE',this.state.config)
     this.styles = {
         '.pie-chart-lines': {
           stroke: 'rgba(0, 0, 0, 1)',
@@ -41,52 +41,41 @@ class PieChartComponent extends Component {
           fill: 'white'
         }
       };
+      
   }
 
   componentDidMount(){
     var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
+    console.log('FETCH DANS LE DID MOUNT pie',url)
     var id = this.props.item.id;
-    console.log('DID MOUNT')
-    if (this.props.data.length === 0){
-        this.props.apiFetchData(url, id);
-    }
-    for(let i=0;i<this.props.data.length;i++){
-        console.log('boucle FOR')
-        if (this.props.data[i].id === this.props.item.id){
-            console.log('ILS SONT EGAUX');
-            i = this.props.data.length;
-        } else {
-            console.log('PAS EGAUX')
-            if (i === this.props.data.length - 1){
-                console.log('DERNIER ELEMENT TESTE');
-                this.props.apiFetchData(url, id);
-            } else {
-                console.log('I AUGMENTE');
-                i++;
-            }
-        }
-        
-    }
-    var data = this.props.data.filter((obj,pos,arr) =>{
-        return arr.map(mapObj => mapObj[id]).indexOf(obj[id]) === pos;
-    });
-    console.log('DATA AFTER TRAITEMENT',data);
+    this.props.apiFetchData(url,id);
   }  
 
-  componentDidUpdate(){
-      console.log('DID UPDATE PIE');
+  componentWillMount(){
+      console.log('WILL MOUNT PIE');
   }
 
+  componentDidUpdate(){
+      console.log('DID UPDATE')
+  }
+
+  componentWillReceiveProps(nextProps){
+      console.log('NEXTPROPS piechart',nextProps);
+      if (this.props.item.url !== nextProps.item.url){
+        this.props.apiFetchData(nextProps.item.url,nextProps.item.id);
+      }   
+  }
 
   transformData = (data) => {
-      console.log('UPDATE',data);
-      var data = data.map((item)=>{
-            console.log('dans la boucle',item)
-          return {key: item.id, value: item.result}
-      })
-      console.log('DATA TRANSFORME',data);
-      return data;
+    
+    var data = data.map((item,i)=>{
+        console.log('COULEUR OU PAS',this.props.config)
+        return {key: item.id, value: item.result, color: this.state.config[i]}
+    });
+    console.log('DATA AVANT LE RETURN',data)
+    return data;
   }
+
 
   mouseOverHandler = (d, e) => {
     //console.log('mouse over');
@@ -117,7 +106,7 @@ class PieChartComponent extends Component {
   }
 
   createTooltip = () => {
-    //console.log("createTooltip function")
+    //console.log("createTooltip function");
     if (this.state.showToolTip) {
         return (
         <ToolTip
@@ -131,61 +120,67 @@ class PieChartComponent extends Component {
     return false;
   }
 
- getRandomColor = () => {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
   render() {
-       console.log('data in render',this.props.data);
+       console.log('data props dans render Pie',this.props.data);
       return(
           <div>
-            {(this.props.data.map((data)=> (
-                <div key={data.id}>
-                    {(data.id === this.props.item.id) ?
+              {this.props.dataIsLoading.map((item)=>(
+                <div key={item.id}>
+                    {(item.id === this.props.item.id) &&
                         <div>
-                            {data.id} =
-                            {this.props.item.id} ?
-                            {/* <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
-                            <Filters item={this.props.item} />
-                            <PieChart id={this.props.item.id}
-                            data={this.transformData(this.props.data.array)} 
-                            innerHoleSize={200}
-                            mouseOverHandler = {this.mouseOverHandler}
-                            mouseOutHandler = {this.mouseOutHandler}
-                            mouseMoveHandler = {this.mouseMoveHandler}
-                            padding={10}
-                            styles={this.styles}
-                            />
-                            <Legend data={this.transformData(this.props.data.array)} dataId={this.state.key} horizontal config={this.state.config} />
-                            {(this.state.showToolTip) ?
-                                <ToolTip
-                                    top={this.state.top}
-                                    left={this.state.left}
-                                    title={this.state.key}
-                                    value={this.state.value}
-                                    />
+                            {(item.bool) ?
+                                <div>
+                                    Donnée en cours de chargement
+                                </div>
                                 :
-                                <div></div>} */}
-                          </div>
-                        :
-                          <div>Pas de composant portant cet identifiant</div>
-                    }
-                </div>
-            )))}
+                                <div>
+                                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                                    <Filters item={this.props.item} />
+                                    {this.props.data.map((data)=>(
+                                        <div key={`Pie${data.id}`}>
+                                            {(data.id === this.props.item.id) ?
+                                                <div>
+                                                    <PieChart id={this.props.item.id}
+                                                    data={this.transformData(data.array)} 
+                                                    innerHoleSize={200}
+                                                    mouseOverHandler = {this.mouseOverHandler}
+                                                    mouseOutHandler = {this.mouseOutHandler}
+                                                    mouseMoveHandler = {this.mouseMoveHandler}
+                                                    padding={10}
+                                                    styles={this.styles}
+                                                    />
+                                                    <Legend data={this.transformData(data.array)} dataId={this.state.key} horizontal config={this.state.configComponent} />
+                                                    {(this.state.showToolTip) ?
+                                                        <ToolTip
+                                                        top={this.state.top}
+                                                        left={this.state.left}
+                                                        title={this.state.key}
+                                                        value={this.state.value}
+                                                        />
+                                                    :
+                                                    <div></div>}
+                                                </div>
+                                                :
+                                                <div>Donnée non trouvée</div>
+                                            }
+                                        </div>
+                                    ))}
+                                </div>
+                            }
+                        </div>
+                        }
+                    </div>
+              ))}
           </div>  
       )
   }
 }
 
 const mapStateToProps = (state) => {
-    console.log("STATE",state);
+    console.log("STATE de mapStateToProps",state);
     return {
-        data: state.data
+        data: state.data,
+        dataIsLoading: state.dataIsLoading
     }
 }
 

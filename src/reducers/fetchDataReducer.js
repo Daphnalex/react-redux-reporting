@@ -9,20 +9,52 @@ export const dataHasErrored = (state = false, action) => {
     }
 }
 
-export const dataIsLoading = (state = false, action) => {
+export const dataIsLoading = (state = [], action) => {
+    console.log('reducer dataIsLoading',action)
     switch (action.type) {
         case DATA_IS_LOADING:
-            return action.isLoading;
+            if (state.length === 0){
+                return [...state, action.isLoading]
+            } else {
+                 state.map((item,i)=> {
+                    if (item.id === action.isLoading.id){
+                        console.log('1er if de action isLoading')
+                        state[i].bool = action.isLoading.bool;
+                        alert('trouvé !!!!');
+                        return state;
+                    }
+                    if ((i === state.length - 1)&&(item.id !== action.isLoading.id)){
+                        alert('rien trouvé');
+                        console.log('2eme if de action isLoading')
+                        state = [...state, action.isLoading]
+                        return state;
+                    }
+                });  
+            }
         default:
             return state;
     }
 }
 
 export const data = (state = [], action) => {
-    console.log('data in reducer',action)
+    console.log('data in fetch reducer',action)
     switch(action.type){
         case DATA_FETCH_SUCCESS:
-            return [...state, action.data];
+            if (state.length === 0){
+                return [...state, action.data]
+            } else {
+                return state.map((item) => {
+                    if (item.id !== action.data.id){
+                        return item
+                    }
+                    console.log('data reducer function before last return')
+                    return {
+                        ...item,
+                        ...action.data
+                    }
+                })  
+                
+            }
         default:
             return state;
     }

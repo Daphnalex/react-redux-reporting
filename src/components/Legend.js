@@ -61,26 +61,13 @@ class Legend extends React.Component {
           <li key={index}>
             <span
               className="icon"
-              style={{ backgroundColor: this.getIconColor(index) }}
+              style={{ backgroundColor: item.color }}
             />
             { item.key || item.x }
           </li>
         )}
       )
     );
-  }
-
-  getIconColor(index) {
-    const {
-      config
-    } = this.props;
-
-    if (typeof config !== 'undefined') {
-      if (config.length > index) {
-        return config[index].color;
-      }
-    }
-    return colors[index];
   }
 
   render() {
