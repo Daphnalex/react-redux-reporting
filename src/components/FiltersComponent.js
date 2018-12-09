@@ -31,6 +31,13 @@ class Filters extends Component {
     ////console.log('NEXTPROPS filters',nextProps); 
   }
 
+  //database is fake and it's old database so we define a old date to current date
+  simulateCurrentDate(){
+    const currentDate = new Date('2017-12-26T04:41:20');
+    
+  }
+  
+
   testFilterDate = (date) => {
     //not date filter for license-active
     if (this.props.item.dataFetch === 'license-active'){
@@ -90,7 +97,7 @@ class Filters extends Component {
           <h6>Date :</h6>
           {this.state.choicesDate.map((date,i)=>(
             <RadioForm onClickElement={()=>this.handleChangeDate(date)} checkedElement={this.props.item.describeElement.filterDate === date} key={`${this.props.item.id}date${i}`} keyBloc={`date${this.props.item.id}`} element={date}/>
-          ))}  
+          ))} 
         </Col>
         <br/>
         <Col s={12} className="scopeFilter">

@@ -43,33 +43,6 @@ class ReportingList extends Component {
         return color;
     }
 
-    componentDidMount(){
-        ////console.log('DID MOUNT REPORTING')
-      }  
-    
-      componentWillMount(){
-        ////console.log('WILL MOUNT REPORTING');
-        this.config = [];
-        for(let i=0; i < 100; i++){
-            var color = this.getRandomColor();
-            ////console.log('récupérer la couleur',color);
-            this.config = [...this.config, color];
-        }
-        this.setState({
-            config: this.config
-        })
-        ////console.log('config constructor',this.config);
-      }
-    
-      componentDidUpdate(){
-          ////console.log('DID UPDATE REPORTING')
-      }
-    
-      componentWillReceiveProps(nextProps){
-          ////console.log('NEXTPROPS REPORTING',nextProps);
-          
-          
-      }
     
     render(){
         const components = {
@@ -91,7 +64,7 @@ class ReportingList extends Component {
                             <div>
                                  {this.props.itemsReporting.map(item =>
                                     <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                        {React.createElement(components[`${item.graphFetch}`], {item: item, config: this.state.config, data: this.props.data.find((element)=>element.id===item.id), dataIsLoading: this.props.dataIsLoading.find((element) => element.id === item.id)} , null)}
+                                        {React.createElement(components[`${item.graphFetch}`], {item: item, data: this.props.data.find((element)=>element.id===item.id), dataIsLoading: this.props.dataIsLoading.find((element) => element.id === item.id), getRandomColor: this.getRandomColor} , null)}
                                     </Col>
                                 )}
                             </div>

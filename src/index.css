@@ -122,3 +122,8 @@ table.arrayComponent th, table.arrayComponent td{
 div.filter{
   text-align: left;
 }
+
+p.legend{
+  font-style: italic;
+  text-align: center;
+}

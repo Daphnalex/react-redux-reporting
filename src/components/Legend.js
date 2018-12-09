@@ -32,25 +32,13 @@ const legendStyles = {
 
 class Legend extends React.Component {
 
-  static get propTypes() {
-    return {
-      config: PropTypes.array,
-      data: PropTypes.array
-    };
-  }
-
-  static get defaultProps() {
-    return {
-      data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    };
-  }
 
   getList() {
     return (
       this.props.data.map(
         (item, index) => {
-        ////console.log('LEGEND HERE',item)
-        ////console.log('INDEX LEGEND',index)
+        console.log('LEGEND HERE',item)
+        console.log('INDEX LEGEND',index)
         return(
           <li key={index}>
             <span
