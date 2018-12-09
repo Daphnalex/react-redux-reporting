@@ -48,7 +48,7 @@ class PieChartComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('nextProps de Pie',nextProps);
+    //console.log('nextProps de Pie',nextProps);
     this.setState({
       dataIsLoading: nextProps.dataIsLoading,
       data: nextProps.data,
@@ -61,12 +61,12 @@ class PieChartComponent extends Component {
     var config = []
     for(let i=0;i<100;i++){
       color = this.props.getRandomColor();
-      console.log('color dans will mount',color);
+      //console.log('color dans will mount',color);
       config.push(color);
       this.setState({
         config: config
       },function(){
-        console.log('this.state.config',this.state.config);
+        //console.log('this.state.config',this.state.config);
       })
     }
     
@@ -74,15 +74,15 @@ class PieChartComponent extends Component {
 
   transformData = (data, message) => {
     var newData = data.map((item, i) => {
-      return { key: item.id, value: item.result, color: '' }
+      return { key: this.props.formatDate(item.id), value: item.result, color: '' }
     });
     var newMessage;
     if (this.state.dataIsLoading){
-      console.log('NEWDATA AVANT TRANSFORMATION',newData);
+      //console.log('NEWDATA AVANT TRANSFORMATION',newData);
       if ((this.state.item.filterDate === "day") && (newData.length > 30)){
         //limit the table to the 30 last days
         newData = newData.slice(data.length - 30, data.length);
-        console.log('newData with filter day',newData);
+        //console.log('newData with filter day',newData);
         newData.map((item,i)=> {
           item.color = this.state.config[i]
         });
@@ -90,7 +90,7 @@ class PieChartComponent extends Component {
       } else if ((this.state.item.filterDate === "month") && (newData.length > 12)){
         //limit the table to the 12 last month
         newData = newData.slice(data.length - 12, data.length);
-        console.log('newData with filter month',newData);
+        //console.log('newData with filter month',newData);
         newData.map((item,i)=> {
           item.color = this.state.config[i]
         });
@@ -101,7 +101,7 @@ class PieChartComponent extends Component {
         newData.map((item,i)=> {
           item.color = this.state.config[i]
         });
-        console.log('newData with filter years',newData);
+        //console.log('newData with filter years',newData);
         newMessage = "les 10 dernières années";
       } else {
         newData.map((item,i) => {
@@ -153,7 +153,7 @@ class PieChartComponent extends Component {
   }
 
   render() {
-       console.log('data props dans render Pie',this.state);
+       //console.log('data props dans render Pie',this.state);
        
        
       return(

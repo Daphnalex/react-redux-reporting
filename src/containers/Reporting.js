@@ -18,7 +18,17 @@ class ReportingList extends Component {
         
     }
 
-    
+    formatDate = (input) => {
+        console.log('input',input);
+        var datePart = input.match(/\d+/g);
+        if (datePart.length === 1){
+            return input
+        } else if (datePart.length === 2){
+            return datePart[1]+'/'+datePart[0];
+        } else {
+            return datePart[2]+'/'+datePart[1]+'/'+datePart[0]
+        }
+      }
 
     testFilterDate = (date) => {
         switch(date){
@@ -64,7 +74,7 @@ class ReportingList extends Component {
                             <div>
                                  {this.props.itemsReporting.map(item =>
                                     <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                        {React.createElement(components[`${item.graphFetch}`], {item: item, data: this.props.data.find((element)=>element.id===item.id), dataIsLoading: this.props.dataIsLoading.find((element) => element.id === item.id), getRandomColor: this.getRandomColor} , null)}
+                                        {React.createElement(components[`${item.graphFetch}`], {item: item, data: this.props.data.find((element)=>element.id===item.id), dataIsLoading: this.props.dataIsLoading.find((element) => element.id === item.id), getRandomColor: this.getRandomColor,formatDate: this.formatDate} , null)}
                                     </Col>
                                 )}
                             </div>
