@@ -3,10 +3,9 @@ import {PieChart} from 'react-easy-chart';
 
 import ToolTip from './ToolTips';
 import Legend from './Legend';
-import config from '../config/base';
 import Filters from './FiltersComponent';
 
-import {apiFetchData, dataIsLoading, data, dataHasErrored} from '../actions/fetchActions';
+import {apiFetchData} from '../actions/fetchActions';
 
 import {connect} from "react-redux";
 
@@ -44,30 +43,11 @@ class PieChartComponent extends Component {
       
   }
 
-  componentDidMount(){
-    // var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
-    // //console.log('FETCH DANS LE DID MOUNT pie',url)
-    // var id = this.props.item.id;
-    // this.props.apiFetchData(url,id);
-  }  
-
-  componentWillMount(){
-     //console.log('WILL MOUNT PIE');
-  }
-
-  componentDidUpdate(){
-      ////console.log('DID UPDATE')
-  }
-
-  componentWillReceiveProps(nextProps){
-       console.log('nextProps',nextProps)
-  }
-
   transformData = (data) => {
-    var data = data.map((item,i)=>{
+    var newData = data.map((item,i)=>{
         return {key: item.id, value: item.result, color: this.state.config[i]}
     });
-    return data;
+    return newData;
   }
 
 
@@ -118,7 +98,7 @@ class PieChartComponent extends Component {
                 </div>
                 :
                 <div>
-                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()} ({this.props.item.describeElement.graph})</h2>
                     <Filters item={this.props.item} />
                     <div key={`Pie${this.props.data.id}`}>
                         {(this.props.data.id === this.props.item.id) ?

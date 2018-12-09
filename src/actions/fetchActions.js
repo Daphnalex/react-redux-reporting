@@ -37,17 +37,19 @@ export const apiFetchData = (url,id) => {
         dispatch(dataIsLoading(true,id));
         fetch(url)
             .then((response) => {
+                console.log('ICI FETCH',response);
                 if (!response.ok){
+                    console.log('PAS DE REPONSE DE LA REQUETE')
                     throw Error(response.statusText);
                 }
-                console.log('ICI FETCH')
-                dispatch(dataIsLoading(false,id));
+                
                 return response;
             })
             .then((response) => response.json())
             .then((data) => {
                 console.log("DATA FETCH",data);
                 dispatch(dataIsSuccess(id,data));
+                dispatch(dataIsLoading(false,id));
             })
             .catch(() => dispatch(dataHasErrored(true)));
     }

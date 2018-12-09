@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import RadioForm from './RadioForm';
-import ClassicalButton from './ClassicalButton';
 import config from '../config/base.js';
 
 import {Row, Col} from 'react-materialize';
@@ -21,19 +20,41 @@ class Filters extends Component {
     ////console.log('this.props.item dans FILTERS',this.props.item);
   }
 
+  componentDidMount(){
+    if (this.props.item.dataFetch === 'license-active'){
+      this.setState({
+        choicesDate: ["Par année","Par mois"]
+      })
+    }
+  }
   componentWillReceiveProps(nextProps){
     ////console.log('NEXTPROPS filters',nextProps); 
   }
 
   testFilterDate = (date) => {
-    switch(date){
-      case "Par année":
-        return "year";
-      case "Par mois":
-        return "month";
-      case "Par jour":
-        return "day";
+    //not date filter for license-active
+    if (this.props.item.dataFetch === 'license-active'){
+      switch(date){
+        case "Par année":
+          return "year";
+        case "Par mois":
+          return "month";
+        default:
+          return "year";
+      }
+    } else {
+      switch(date){
+        case "Par année":
+          return "year";
+        case "Par mois":
+          return "month";
+        case "Par jour":
+          return "day";
+        default: 
+          return "year";
+      }
     }
+    
   }
 
   handleChangeDate = (date) => {

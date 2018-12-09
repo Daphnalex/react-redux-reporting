@@ -28,6 +28,8 @@ class ReportingList extends Component {
                 return "month";
             case "Par jour":
                 return "day";
+            default :
+                return "year";
         }
     }
 

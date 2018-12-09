@@ -2,9 +2,7 @@ import React, {Component} from "react";
 import {Button} from 'react-materialize';
 
 class ClassicalButton extends Component{
-  constructor(props){
-    super(props);
-  }
+  
 
   render(){
     return(

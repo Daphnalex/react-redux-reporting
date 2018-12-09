@@ -56,7 +56,7 @@ class Home extends Component {
     return (
         <Row className="homePage">
             <Row className="titleHome">
-                <h1><span className="bigTitle">Reporting</span><br/>Phone Booster</h1>
+                <h1><span className="bigTitle">Reporting</span><br/>*My Product*</h1>
             </Row>
             <hr className="bigHr"/>
             <Col s={12} m={12} l={12} className="reportingContent">

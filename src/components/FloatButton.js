@@ -3,9 +3,6 @@ import {Button} from 'react-materialize';
 
 class FloatButton extends Component{
 
-  constructor(props){
-    super(props);
-  }
 
   render(){
     return(
