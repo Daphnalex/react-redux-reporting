@@ -18,11 +18,11 @@ class Filters extends Component {
       choicesScope: ["Global", "Par client", "Par site", "Par équipe"],
       loadComponent: false
     }
-    //console.log('this.props.item dans FILTERS',this.props.item);
+    ////console.log('this.props.item dans FILTERS',this.props.item);
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('NEXTPROPS filters',nextProps); 
+    ////console.log('NEXTPROPS filters',nextProps); 
   }
 
   testFilterDate = (date) => {
@@ -37,7 +37,8 @@ class Filters extends Component {
   }
 
   handleChangeDate = (date) => {
-    console.log('ITEM avant changement',this.props.item)
+  ////console.log('ITEM avant changement',this.props.item)
+  console.log('nouvelle date',date)
     var itemReporting = {
       url: `${config.root}/${this.props.item.dataFetch}/${this.testFilterDate(date)}`,
       dataFetch: this.props.item.dataFetch,
@@ -60,7 +61,7 @@ class Filters extends Component {
 
 
   render() {
-    console.log('ITEM dans filtres',this.props.item)
+    ////console.log('ITEM dans filtres',this.props.item)
     return (
       <Row className='filter'>
         <h5>Filter ce composant par :</h5>
@@ -84,7 +85,7 @@ class Filters extends Component {
 
 
 const mapDispatchToProps = (dispatch) => {
-  //console.log('dispatch',dispatch)
+  ////console.log('dispatch',dispatch)
   return {
     updateElementReporting: (elementReporting) => {
       dispatch(updateElementReportingAction(elementReporting));

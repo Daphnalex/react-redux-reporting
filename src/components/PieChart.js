@@ -13,10 +13,10 @@ import {connect} from "react-redux";
 class PieChartComponent extends Component {
 
   constructor(props){
+    
     super(props);
 
     this.state = {
-        data: [],
         showToolTip: false,
         top: 0,
         left: 0,
@@ -26,11 +26,11 @@ class PieChartComponent extends Component {
         config: this.props.config,
         configComponent: []
     }
-    console.log('CONSTRUCTOR ID',this.state.id)
+    ////console.log('CONSTRUCTOR ID',this.state.id)
     this.mouseOverHandler = this.mouseOverHandler.bind(this);
     this.mouseOutHandler = this.mouseOutHandler.bind(this);
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
-    console.log('LES COULEURS DU STATE',this.state.config)
+    ////console.log('LES COULEURS DU STATE',this.state.config)
     this.styles = {
         '.pie-chart-lines': {
           stroke: 'rgba(0, 0, 0, 1)',
@@ -45,68 +45,54 @@ class PieChartComponent extends Component {
   }
 
   componentDidMount(){
-    var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
-    console.log('FETCH DANS LE DID MOUNT pie',url)
-    var id = this.props.item.id;
-    this.props.apiFetchData(url,id);
+    // var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
+    // //console.log('FETCH DANS LE DID MOUNT pie',url)
+    // var id = this.props.item.id;
+    // this.props.apiFetchData(url,id);
   }  
 
   componentWillMount(){
-      console.log('WILL MOUNT PIE');
+     //console.log('WILL MOUNT PIE');
   }
 
   componentDidUpdate(){
-      console.log('DID UPDATE')
+      ////console.log('DID UPDATE')
   }
 
   componentWillReceiveProps(nextProps){
-      console.log('NEXTPROPS piechart',nextProps);
-      if (this.props.item.url !== nextProps.item.url){
-        this.props.apiFetchData(nextProps.item.url,nextProps.item.id);
-      }   
+       console.log('nextProps',nextProps)
   }
 
   transformData = (data) => {
-    
     var data = data.map((item,i)=>{
-        console.log('COULEUR OU PAS',this.props.config)
         return {key: item.id, value: item.result, color: this.state.config[i]}
     });
-    console.log('DATA AVANT LE RETURN',data)
     return data;
   }
 
 
   mouseOverHandler = (d, e) => {
-    //console.log('mouse over');
-    //console.log('d',d);
-    //console.log('e',e);
+
     this.setState({
       showToolTip: true,
       top: e.y,
       left: e.x,
       value: d.value,
       key: d.data.key
-    },function(){
-        //console.log('post over',this.state.key)
     })
   }
 
   mouseMoveHandler = (d, e) => {
-    //console.log('mouse move',e);
-    //console.log("DDD",d)
     if (this.state.showToolTip) {
       this.setState({top: e.y, left: e.x});
     }
   }
 
   mouseOutHandler = () => {
-    //console.log('mouse Out');
     this.setState({showToolTip: false});
   }
 
   createTooltip = () => {
-    //console.log("createTooltip function");
     if (this.state.showToolTip) {
         return (
         <ToolTip
@@ -121,68 +107,54 @@ class PieChartComponent extends Component {
   }
 
   render() {
-       console.log('data props dans render Pie',this.props.data);
+       console.log('data props dans render Pie',this.props);
+       
+       
       return(
           <div>
-              {this.props.dataIsLoading.map((item)=>(
-                <div key={item.id}>
-                    {(item.id === this.props.item.id) &&
-                        <div>
-                            {(item.bool) ?
-                                <div>
-                                    Donnée en cours de chargement
-                                </div>
+              {this.props.dataIsLoading.bool ?
+                <div>
+                    Donnée en cours de chargement
+                </div>
+                :
+                <div>
+                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                    <Filters item={this.props.item} />
+                    <div key={`Pie${this.props.data.id}`}>
+                        {(this.props.data.id === this.props.item.id) ?
+                            <div>
+                                <PieChart id={this.props.item.id}
+                                data={this.transformData(this.props.data.array)} 
+                                innerHoleSize={200}
+                                mouseOverHandler = {this.mouseOverHandler}
+                                mouseOutHandler = {this.mouseOutHandler}
+                                mouseMoveHandler = {this.mouseMoveHandler}
+                                padding={10}
+                                styles={this.styles}
+                                />
+                                <Legend data={this.transformData(this.props.data.array)} dataId={this.state.key} horizontal config={this.state.configComponent} />
+                                {(this.state.showToolTip) ?
+                                    <ToolTip
+                                    top={this.state.top}
+                                    left={this.state.left}
+                                    title={this.state.key}
+                                    value={this.state.value}
+                                    />
                                 :
-                                <div>
-                                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
-                                    <Filters item={this.props.item} />
-                                    {this.props.data.map((data)=>(
-                                        <div key={`Pie${data.id}`}>
-                                            {(data.id === this.props.item.id) ?
-                                                <div>
-                                                    <PieChart id={this.props.item.id}
-                                                    data={this.transformData(data.array)} 
-                                                    innerHoleSize={200}
-                                                    mouseOverHandler = {this.mouseOverHandler}
-                                                    mouseOutHandler = {this.mouseOutHandler}
-                                                    mouseMoveHandler = {this.mouseMoveHandler}
-                                                    padding={10}
-                                                    styles={this.styles}
-                                                    />
-                                                    <Legend data={this.transformData(data.array)} dataId={this.state.key} horizontal config={this.state.configComponent} />
-                                                    {(this.state.showToolTip) ?
-                                                        <ToolTip
-                                                        top={this.state.top}
-                                                        left={this.state.left}
-                                                        title={this.state.key}
-                                                        value={this.state.value}
-                                                        />
-                                                    :
-                                                    <div></div>}
-                                                </div>
-                                                :
-                                                <div>Donnée non trouvée</div>
-                                            }
-                                        </div>
-                                    ))}
-                                </div>
-                            }
-                        </div>
+                                <div></div>}
+                            </div>
+                            :
+                            <div>Donnée non trouvée</div>
                         }
                     </div>
-              ))}
+                </div>
+              }
           </div>  
       )
   }
 }
 
-const mapStateToProps = (state) => {
-    console.log("STATE de mapStateToProps",state);
-    return {
-        data: state.data,
-        dataIsLoading: state.dataIsLoading
-    }
-}
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -192,5 +164,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect (mapStateToProps, mapDispatchToProps)(PieChartComponent);
+export default connect (undefined, mapDispatchToProps)(PieChartComponent);
 

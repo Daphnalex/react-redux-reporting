@@ -16,36 +16,43 @@ class Home extends Component {
      showAddingBloc: false,
      choicesData: ["Connexions","Licences actives"],
      choicesGraph: ["Camembert", "Graphique en barre", "Tableau"],
-     itemsReporting: []
+     itemsReporting: this.props.itemsReporting,
+     dataFetch: this.props.data,
+     dataFetchIsLoading: this.props.dataIsLoading
   }
 
   onClickButton = () =>{
-      //console.log('button clic');
+      ////console.log('button clic');
       this.setState({
           showAddingBloc: !this.state.showAddingBloc
       })
   }
 
   componentDidMount(){
-    console.log('DID MOUNT HOME')
+    ////console.log('DID MOUNT HOME')
   }  
 
   componentWillMount(){
-      console.log('WILL MOUNT HOME')
+      ////console.log('WILL MOUNT HOME')
   }
 
   componentDidUpdate(){
-      console.log('DID UPDATE HOME')
+      ////console.log('DID UPDATE HOME')
   }
 
   componentWillReceiveProps(nextProps){
-      console.log('NEXTPROPS HOME',nextProps);
-      
+      //console.log('NEXTPROPS HOME',nextProps);
+      this.setState({
+          itemsReporting: nextProps.itemsReporting,
+          dataFetch: nextProps.data,
+          dataFetchIsLoading: nextProps.dataIsLoading
+          })
       
   }
 
   render() {
-      console.log('ITEMS HOME',this.props.itemsReporting)
+      //console.log('ITEMS HOME',this.props.itemsReporting);
+      //console.log('FETCH DATA IN HOME',this.state.dataFetch);
     return (
         <Row className="homePage">
             <Row className="titleHome">
@@ -67,7 +74,7 @@ class Home extends Component {
                 }
             </Col>
             <Col s={12} m={12} l={12}>
-                <Reporting itemsReporting={this.props.itemsReporting} />
+                <Reporting itemsReporting={this.props.itemsReporting} data={this.state.dataFetch} dataIsLoading={this.state.dataFetchIsLoading}/>
             </Col>
         </Row>
     )
@@ -77,12 +84,14 @@ class Home extends Component {
 const mapStateToProps = (state) => {
     console.log('mapStateToProps',state);
     return({
-        itemsReporting: state.itemsReporting
+        itemsReporting: state.itemsReporting,
+        data: state.data,
+        dataIsLoading: state.dataIsLoading
     })
 }
 
 const mapDispatchToProps = (dispatch) => {
-    //console.log('dispatch',dispatch)
+    ////console.log('dispatch',dispatch)
     return {
         addElementReporting: (elementReporting) => {
             dispatch(addElementReportingAction(elementReporting));

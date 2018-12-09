@@ -23,7 +23,7 @@ export default class ArrayComponent extends Component {
       .then(json => {
           if(json){
               const data = json.map((item) => { return {name: item.id, value: item.result} })
-              //console.log("DATA JSON",data);
+              ////console.log("DATA JSON",data);
               this.setState({data: data, loading: false});
           }
       })
@@ -31,7 +31,7 @@ export default class ArrayComponent extends Component {
   }
 
   render() {
-      //console.log('item',this.state.item)
+      ////console.log('item',this.state.item)
     return (
       <div>
         {(this.loading) ?

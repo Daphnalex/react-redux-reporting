@@ -7,11 +7,15 @@ import ClassicalButton from "./ClassicalButton";
 
 import config from '../config/base';
 
-export default class ChoicesBloc extends Component {
+import {connect} from 'react-redux';
+
+import {apiFetchData} from '../actions/fetchActions';
+
+class ChoicesBloc extends Component {
     constructor(props){
         super(props);
-        //console.log("props",props);
-        //console.log("props function", props.addElementReportingAction)
+        ////console.log("props",props);
+        ////console.log("props function", props.addElementReportingAction)
         this.state = {
             choiceData: "",
             choiceGraph: ""
@@ -19,7 +23,7 @@ export default class ChoicesBloc extends Component {
     }
 
     handleChangeData = (data) => {
-        //console.log("data",data);
+        ////console.log("data",data);
         this.setState({
             choiceData: data
         })
@@ -59,7 +63,7 @@ export default class ChoicesBloc extends Component {
       var dataFetch = this.testDataChoice(data);
       var graphFetch = this.testGraphChoice(graph);
       const itemReporting = {
-          urlFetchdb: `${config.root}/${dataFetch}/year`,
+          url: `${config.root}/${dataFetch}/year`,
           dataFetch: dataFetch,
           graphFetch: graphFetch,
           filterDate: "year",
@@ -72,18 +76,23 @@ export default class ChoicesBloc extends Component {
               filterScope: "Global"
           }
       }
-      //console.log("itemReporting",itemReporting);
+      ////console.log("itemReporting",itemReporting);
       this.props.addElementReporting(itemReporting);
       this.setState({
           choiceData: "",
           choiceGraph: ""
       });
       this.props.showAddingBloc();
-  }
+      this.props.apiFetchData(itemReporting.url,itemReporting.id);
+    }
 
-  checkedElement = (element) => {
-      //console.log("element",element);
-  }
+    checkedElement = (element) => {
+        ////console.log("element",element);
+    }
+
+    componentWillReceiveProps(nextProps){
+        console.log('CHOICESBLOC WILLRECEIVEPROPS',nextProps);
+    }
 
   render() {
     return (
@@ -109,3 +118,13 @@ export default class ChoicesBloc extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        apiFetchData: (url,id) => {
+            dispatch(apiFetchData(url,id))
+        }
+    }
+}
+
+export default connect(undefined, mapDispatchToProps) (ChoicesBloc);

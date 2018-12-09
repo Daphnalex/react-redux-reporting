@@ -11,7 +11,7 @@ class ReportingList extends Component {
     
     constructor(props){
         super(props);
-        //console.log('props ReportingList',props.itemsReporting);
+        ////console.log('props ReportingList',props.itemsReporting);
         this.state = {
             config: []
         }
@@ -42,29 +42,29 @@ class ReportingList extends Component {
     }
 
     componentDidMount(){
-        console.log('DID MOUNT REPORTING')
+        ////console.log('DID MOUNT REPORTING')
       }  
     
       componentWillMount(){
-        console.log('WILL MOUNT REPORTING');
+        ////console.log('WILL MOUNT REPORTING');
         this.config = [];
         for(let i=0; i < 100; i++){
             var color = this.getRandomColor();
-            console.log('récupérer la couleur',color);
+            ////console.log('récupérer la couleur',color);
             this.config = [...this.config, color];
         }
         this.setState({
             config: this.config
         })
-        console.log('config constructor',this.config);
+        ////console.log('config constructor',this.config);
       }
     
       componentDidUpdate(){
-          console.log('DID UPDATE REPORTING')
+          ////console.log('DID UPDATE REPORTING')
       }
     
       componentWillReceiveProps(nextProps){
-          console.log('NEXTPROPS REPORTING',nextProps);
+          ////console.log('NEXTPROPS REPORTING',nextProps);
           
           
       }
@@ -76,19 +76,27 @@ class ReportingList extends Component {
             ArrayComponent: ArrayComponent
             
         };
-        console.log('RENDER REPORTING',this.state.config)
+        //console.log('RENDER REPORTING DATA',this.props.data)
         return(
             <Row>
                 {this.props.itemsReporting.length !== 0 ?
-                   <Row>
-                        {this.props.itemsReporting.map(item =>
-                            <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
-                                {React.createElement(components[`${item.graphFetch}`], {item: item, config: this.state.config} , null)}
-                            </Col>
-                        )}
-                    </Row>
-                    :
-                    <Row>Pas d'éléments à afficher</Row>
+                    <Row>
+                        {(this.props.data.length === 0)||(this.props.data === undefined) ?
+                            <div>
+                                Reporting en cours de chargement...
+                            </div>
+                            :
+                            <div>
+                                 {this.props.itemsReporting.map(item =>
+                                    <Col className='elementReporting' key={item.id} s={12} m={12} l={6}>
+                                        {React.createElement(components[`${item.graphFetch}`], {item: item, config: this.state.config, data: this.props.data.find((element)=>element.id===item.id), dataIsLoading: this.props.dataIsLoading.find((element) => element.id === item.id)} , null)}
+                                    </Col>
+                                )}
+                            </div>
+                        }
+                    </Row> 
+                :
+                <Row>Pas d'éléments à afficher</Row> 
                 }
             </Row>
         )

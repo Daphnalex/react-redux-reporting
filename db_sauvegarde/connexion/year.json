@@ -1,0 +1,285 @@
+[
+    {
+        "id": "2018",
+        "name": "R\u00e9sultats pour l\u0027ann\u00e9e2018",
+        "start_at": {
+            "date": "2018-01-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Paris"
+        },
+        "end_at": {
+            "date": "2018-12-31 23:59:59.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Paris"
+        },
+        "result": 372,
+        "children": [
+            {
+                "id": 1,
+                "name": "Les Ateliers du ROI",
+                "start_at": {
+                    "date": "2018-01-01 00:00:00.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "end_at": {
+                    "date": "2018-12-31 23:59:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "result": 303,
+                "children": [
+                    {
+                        "id": 1,
+                        "name": "CHARTRES",
+                        "start_at": {
+                            "date": "2018-01-01 00:00:00.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "end_at": {
+                            "date": "2018-12-31 23:59:59.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "result": 303,
+                        "children": [
+                            {
+                                "id": null,
+                                "name": "Sans \u00e9quipe",
+                                "start_at": {
+                                    "date": "2018-01-01 00:00:00.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "end_at": {
+                                    "date": "2018-12-31 23:59:59.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "result": 12,
+                                "children": []
+                            },
+                            {
+                                "id": 1,
+                                "name": "LES PETITS CHEFS",
+                                "start_at": {
+                                    "date": "2018-01-01 00:00:00.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "end_at": {
+                                    "date": "2018-12-31 23:59:59.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "result": 291,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Les Ateliers du ROI",
+                "start_at": {
+                    "date": "2018-01-01 00:00:00.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "end_at": {
+                    "date": "2018-12-31 23:59:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "result": 69,
+                "children": [
+                    {
+                        "id": 3,
+                        "name": "CHARTRES",
+                        "start_at": {
+                            "date": "2018-01-01 00:00:00.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "end_at": {
+                            "date": "2018-12-31 23:59:59.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "result": 69,
+                        "children": [
+                            {
+                                "id": null,
+                                "name": "Sans \u00e9quipe",
+                                "start_at": {
+                                    "date": "2018-01-01 00:00:00.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "end_at": {
+                                    "date": "2018-12-31 23:59:59.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "result": 69,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "2018",
+        "name": "R\u00e9sultats pour l\u0027ann\u00e9e2018",
+        "start_at": {
+            "date": "2018-01-01 00:00:00.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Paris"
+        },
+        "end_at": {
+            "date": "2018-12-31 23:59:59.000000",
+            "timezone_type": 3,
+            "timezone": "Europe\/Paris"
+        },
+        "result": 104,
+        "children": [
+            {
+                "id": 1,
+                "name": "Les Ateliers du ROI",
+                "start_at": {
+                    "date": "2018-01-01 00:00:00.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "end_at": {
+                    "date": "2018-12-31 23:59:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "result": 59,
+                "children": [
+                    {
+                        "id": 1,
+                        "name": "CHARTRES",
+                        "start_at": {
+                            "date": "2018-01-01 00:00:00.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "end_at": {
+                            "date": "2018-12-31 23:59:59.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "result": 59,
+                        "children": [
+                            {
+                                "id": 1,
+                                "name": "LES PETITS CHEFS",
+                                "start_at": {
+                                    "date": "2018-01-01 00:00:00.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "end_at": {
+                                    "date": "2018-12-31 23:59:59.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "result": 59,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "name": "Les Ateliers du ROI",
+                "start_at": {
+                    "date": "2018-01-01 00:00:00.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "end_at": {
+                    "date": "2018-12-31 23:59:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "result": 45,
+                "children": [
+                    {
+                        "id": 3,
+                        "name": "CHARTRES",
+                        "start_at": {
+                            "date": "2018-01-01 00:00:00.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "end_at": {
+                            "date": "2018-12-31 23:59:59.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "result": 45,
+                        "children": [
+                            {
+                                "id": null,
+                                "name": "Sans \u00e9quipe",
+                                "start_at": {
+                                    "date": "2018-01-01 00:00:00.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "end_at": {
+                                    "date": "2018-12-31 23:59:59.000000",
+                                    "timezone_type": 3,
+                                    "timezone": "Europe\/Paris"
+                                },
+                                "result": 45,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 6,
+                "name": "ARMATIS",
+                "start_at": {
+                    "date": "2018-01-01 00:00:00.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "end_at": {
+                    "date": "2018-12-31 23:59:59.000000",
+                    "timezone_type": 3,
+                    "timezone": "Europe\/Paris"
+                },
+                "result": 0,
+                "children": [
+                    {
+                        "id": 8,
+                        "name": "CHARTRES",
+                        "start_at": {
+                            "date": "2018-01-01 00:00:00.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "end_at": {
+                            "date": "2018-12-31 23:59:59.000000",
+                            "timezone_type": 3,
+                            "timezone": "Europe\/Paris"
+                        },
+                        "result": 0,
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    }
+]

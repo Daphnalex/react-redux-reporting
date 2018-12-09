@@ -10,52 +10,63 @@ export const dataHasErrored = (state = false, action) => {
 }
 
 export const dataIsLoading = (state = [], action) => {
-    console.log('reducer dataIsLoading',action)
+    console.log('REDUCER DATA IS LOADING (1):')
+    console.log('state (1):',state);
+    console.log('action (1):',action);
     switch (action.type) {
         case DATA_IS_LOADING:
-            if (state.length === 0){
-                return [...state, action.isLoading]
+            var j=0;
+            var newState = state.map((item,i)=> {
+                
+                if (item.id !== action.isLoading.id){
+                    console.log('Si id différents on retourne item',item);
+                    return item;
+                } else {
+                    console.log('si id identique on retourne le nouvel item',action.isLoading);
+                    j++;
+                    return action.isLoading;
+                }  
+            });
+            if (j===0){
+                console.log('si pas de modification de dataIsLoading trouvé on ajoute le nouvel item',[...state,action.isLoading]);
+                return [...state, action.isLoading]; 
             } else {
-                 state.map((item,i)=> {
-                    if (item.id === action.isLoading.id){
-                        console.log('1er if de action isLoading')
-                        state[i].bool = action.isLoading.bool;
-                        alert('trouvé !!!!');
-                        return state;
-                    }
-                    if ((i === state.length - 1)&&(item.id !== action.isLoading.id)){
-                        alert('rien trouvé');
-                        console.log('2eme if de action isLoading')
-                        state = [...state, action.isLoading]
-                        return state;
-                    }
-                });  
+                console.log('s il y a eu modification c etait un update on retourne le nouveau state',newState);
+                return newState;
             }
+            
         default:
+            console.log('Pas dans le reducer isLoading on retourne state',state);
             return state;
     }
 }
 
 export const data = (state = [], action) => {
-    console.log('data in fetch reducer',action)
+    console.log('REDUCER DE LA DATA (2):');
+    console.log('state (2):',state);
+    console.log('action (2):', action)
     switch(action.type){
         case DATA_FETCH_SUCCESS:
-            if (state.length === 0){
-                return [...state, action.data]
+            var j=0;
+            var newState = state.map((item,i) => {
+                if (item.id !== action.data.id){
+                    console.log('(2)si id different on retourne item',item);
+                    return item;
+                } else {
+                    console.log('(2)si id identique on met à jour item par', {...item,...action.data});
+                    j++;
+                    return {...item,...action.data};
+                }
+            }); 
+            if (j===0){
+                console.log('(2) pas de modifications de data donc on en ajoute une',[...state,action.data]);
+                return [...state, action.data];
             } else {
-                return state.map((item) => {
-                    if (item.id !== action.data.id){
-                        return item
-                    }
-                    console.log('data reducer function before last return')
-                    return {
-                        ...item,
-                        ...action.data
-                    }
-                })  
-                
+                console.log('(2) sinon on remplace state par newState',newState);
+                return newState;
             }
         default:
+            console.log('(2) pas dans le bon reducer')
             return state;
     }
     

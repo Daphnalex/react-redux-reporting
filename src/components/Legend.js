@@ -55,8 +55,8 @@ class Legend extends React.Component {
     return (
       this.props.data.map(
         (item, index) => {
-        //console.log('LEGEND HERE',item)
-        //console.log('INDEX LEGEND',index)
+        ////console.log('LEGEND HERE',item)
+        ////console.log('INDEX LEGEND',index)
         return(
           <li key={index}>
             <span

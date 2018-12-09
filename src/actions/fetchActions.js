@@ -1,6 +1,6 @@
 export const DATA_HAS_ERRORED = "DATA_HAS_ERRORED";
 export const DATA_IS_LOADING = "DATA_IS_LOADING";
-export const DATA_FETCH_SUCCESS = "DATA_FETCH_SUCESS";
+export const DATA_FETCH_SUCCESS = "DATA_FETCH_SUCCESS";
 export const API_FETCH_DATA = "API_FETCH_DATA";
 
 export const dataHasErrored = (bool) =>{
@@ -11,9 +11,10 @@ export const dataHasErrored = (bool) =>{
 }
 
 export const dataIsLoading = (bool,id) => {
-    console.log('ID dans dataIsLoading',id)
+    console.log('ID dans dataIsLoading',id);
+    console.log('on la passe à',bool)
     if (id !== undefined){
-        console.log('on récupère toujours id',id);
+        console.log('on récupère isLoading',{bool: bool,id: id});
         return {
             type: DATA_IS_LOADING,
             isLoading: {bool: bool, id: id}

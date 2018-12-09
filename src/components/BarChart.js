@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {BarChart} from 'react-easy-chart';
 import ToolTip from './ToolTips';
 import Legend from './Legend';
+import Filters from './FiltersComponent';
 import config from '../config/base';
 
 import {connect} from 'react-redux';
@@ -29,17 +30,17 @@ class BarChartComponent extends Component {
 
   componentDidMount = () => {
     var url = `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`;
-    this.props.apiFetchData(url);
-
+    var id = this.props.item.id;
+    this.props.apiFetchData(url,id);
   }  
 
   transformData = (data) => {
-      //console.log('UPDATE',data);
-      var data = data.map((item)=>{
-            console.log('dans la boucle',item)
-          return {x: item.id, y: item.result}
+      ////console.log('UPDATE',data);
+      var data = data.map((item,i)=>{
+            //console.log('dans la boucle',item)
+          return {x: item.id, y: item.result, color: this.state.config[i]}
       })
-      //console.log('DATA TRANSFORME',data);
+      ////console.log('DATA TRANSFORME',data);
       return data;
   }
 
@@ -64,44 +65,65 @@ class BarChartComponent extends Component {
   }
 
   render() {
-      return(
-          <div>
-              { this.props.dataIsLoading ?
-                <div>Loading...</div>
-                :
-                <div>
-                    <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
-                    <BarChart id={this.state.item.id}
-                        axes
-                        grid
-                        colorBars
-                        height={396}
-                        width={500}
-                        data={this.transformData(this.props.data)}
-                        mouseOverHandler={this.mouseOverHandler}
-                        mouseOutHandler={this.mouseOutHandler}
-                        mouseMoveHandler={this.mouseMoveHandler}
-                        />
-                    <Legend data={this.transformData(this.props.data)} dataId={this.state.key} horizontal config={this.state.config} />
-                    {(this.state.showToolTip) ?
-                        <ToolTip
-                            top={this.state.top}
-                            left={this.state.left}
-                            title={this.state.x}
-                            value={this.state.y}
-                            />
-                        :
-                        <div></div>
-                    }
-                 </div>
-              }
-          </div>
-      )
+    //console.log('data props dans render Pie',this.props.data);
+    return(
+        <div>
+            {this.props.dataIsLoading.map((item)=>(
+              <div key={item.id}>
+                  {(item.id === this.props.item.id) &&
+                      <div>
+                          {(item.bool) ?
+                              <div>
+                                  Donnée en cours de chargement
+                              </div>
+                              :
+                              <div>
+                                  <h2>{this.props.item.describeElement.data} {this.props.item.describeElement.filterDate.toLowerCase()}</h2>
+                                  <Filters item={this.props.item} />
+                                  {this.props.data.map((data)=>(
+                                      <div key={`Pie${data.id}`}>
+                                          {(data.id === this.props.item.id) ?
+                                              <div>
+                                                  <BarChart id={this.props.item.id}
+                                                    axes
+                                                    grid
+                                                    colorBars
+                                                    height={396}
+                                                    width={500}
+                                                    data={this.transformData(data.array)}
+                                                    mouseOverHandler={this.mouseOverHandler}
+                                                    mouseOutHandler={this.mouseOutHandler}
+                                                    mouseMoveHandler={this.mouseMoveHandler}
+                                                    />
+                                                  <Legend data={this.transformData(data.array)} dataId={this.state.key} horizontal config={this.state.configComponent} />
+                                                  {(this.state.showToolTip) ?
+                                                      <ToolTip
+                                                      top={this.state.top}
+                                                      left={this.state.left}
+                                                      title={this.state.key}
+                                                      value={this.state.value}
+                                                      />
+                                                  :
+                                                  <div></div>}
+                                              </div>
+                                              :
+                                              <div>Donnée non trouvée</div>
+                                          }
+                                      </div>
+                                  ))}
+                              </div>
+                          }
+                      </div>
+                      }
+                  </div>
+            ))}
+        </div>  
+    )
   }
 }
 
 const mapStateToProps = (state) => {
-    console.log("STATE",state);
+    //console.log("STATE",state);
     return {
         dataIsLoading: state.dataIsLoading,
         dataHasErrored: state.dataHasErrored,
