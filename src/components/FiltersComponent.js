@@ -64,9 +64,24 @@ class Filters extends Component {
     
   }
 
+  testFilterScope = (scope) => {
+    switch(scope){
+      case 'Global':
+        return 'global';
+      case "Par client":
+        return "client";
+      case "Par site":
+        return "site";
+      case "Par équipe":
+        return "team";
+      default:
+        return "global";
+    }
+  }
+
   handleChangeDate = (date) => {
   ////console.log('ITEM avant changement',this.props.item)
-  console.log('nouvelle date',date)
+    console.log('nouvelle date',date)
     var itemReporting = {
       url: `${config.root}/${this.props.item.dataFetch}/${this.testFilterDate(date)}`,
       dataFetch: this.props.item.dataFetch,
@@ -83,7 +98,27 @@ class Filters extends Component {
     }
     console.log('ITEM après changement',itemReporting)
     this.props.updateElementReporting(itemReporting);
-    this.props.apiFetchData(itemReporting.url,this.props.item.id);
+    this.props.apiFetchData(itemReporting.url,this.props.item.id,this.props.item.filterScope);
+  }
+
+  handleChangeScope = (scope) => {
+    console.log('nouveau scope',scope)
+    var itemReporting = {
+      url: `${config.root}/${this.props.item.dataFetch}/${this.props.item.filterDate}`,
+      dataFetch: this.props.item.dataFetch,
+      graphFetch: this.props.item.graphFetch,
+      filterDate: this.props.item.filterDate,
+      filterScope: this.testFilterScope(scope),
+      id: this.props.item.id,
+      describeElement: {
+          data: this.props.item.describeElement.data,
+          graph: this.props.item.describeElement.graph,
+          filterDate: this.props.item.describeElement.filterDate,
+          filterScope: scope
+      }
+    }
+    this.props.updateElementReporting(itemReporting);
+    this.props.apiFetchData(itemReporting.url, this.props.item.id,itemReporting.filterScope);
   }
 
 
@@ -103,7 +138,7 @@ class Filters extends Component {
         <Col s={12} className="scopeFilter">
           <h6>Portée :</h6>
           {this.state.choicesScope.map((scope,i)=>(
-            <RadioForm onClickElement={()=>this.handleChangeGraph(scope)} checkedElement={this.props.item.describeElement.filterScope === scope} key={`${this.props.item.id}scope${i}`} keyBloc={`scope${this.props.item.id}`} element={scope}/>
+            <RadioForm onClickElement={()=>this.handleChangeScope(scope)} checkedElement={this.props.item.describeElement.filterScope === scope} key={`${this.props.item.id}scope${i}`} keyBloc={`scope${this.props.item.id}`} element={scope}/>
           ))}
         </Col>
       </Row>
@@ -118,8 +153,8 @@ const mapDispatchToProps = (dispatch) => {
     updateElementReporting: (elementReporting) => {
       dispatch(updateElementReportingAction(elementReporting));
     },
-    apiFetchData: (data,id) => {
-      dispatch(apiFetchData(data,id));
+    apiFetchData: (data,id,scope) => {
+      dispatch(apiFetchData(data,id,scope));
     }
   }
 }

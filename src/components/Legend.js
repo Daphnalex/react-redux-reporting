@@ -34,11 +34,10 @@ class Legend extends React.Component {
 
 
   getList() {
+    console.log('this.props.data LEGEND',this.props.data)
     return (
       this.props.data.map(
         (item, index) => {
-        console.log('LEGEND HERE',item)
-        console.log('INDEX LEGEND',index)
         return(
           <li key={index}>
             <span
@@ -53,6 +52,7 @@ class Legend extends React.Component {
   }
 
   render() {
+    console.log("DANS LEGEND data",this.props.data)
     return (
       <div className="legend-container">
         <Style scopeSelector=".legend-container" rules={legendStyles} />

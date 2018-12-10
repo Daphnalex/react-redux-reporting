@@ -22,15 +22,53 @@ export const dataIsLoading = (bool,id) => {
     } 
 }
 
-export const dataIsSuccess = (id, data) => {
-    console.log("dans le action",data)
-    return {
-        type: DATA_FETCH_SUCCESS,
-        data: {array: data, id: id}
+export const groupBy = (tableauObjets, propriete) =>{
+    return tableauObjets.reduce(function (acc, obj) {
+      var cle = obj[propriete];
+      if(!acc[cle]){
+        acc[cle] = [];
+      }
+      acc[cle].push(obj);
+      console.log('ACC',acc)
+      return acc;
+    }, {});
+  }
+
+export const dataIsSuccess = (id, data,scope) => {
+    console.log('récupère id',id)
+    console.log("dans le action",data);
+    console.log('data is success, scope',scope);
+    var newData = [];
+    switch(scope){
+        case 'global':
+            console.log('scope global');
+            return {
+                type: DATA_FETCH_SUCCESS,
+                data: {array: data, id: id}
+            }
+        case 'client':
+            console.log('scope client');
+            data.map((array) => {
+                array.children.map((client) =>{
+                    console.log('client',client);
+                    var clientElement = {id: array.id, name: client.name, result: client.result};
+                    newData = [...newData, clientElement];
+                })
+            })
+            newData = groupBy(newData, 'name');
+            newData = Object.values(newData)
+            console.log('newData scope',newData)
+            return {
+                type: DATA_FETCH_SUCCESS,
+                data: {array: newData, id: id}
+            }
     }
+        
+    
 }
 
-export const apiFetchData = (url,id) => {
+export const apiFetchData = (url,id,scope) => {
+    console.log('apiFetchData récupère scope',scope);
     console.log('entre dans apiFetchData',id)
     return (dispatch) => {
         console.log('on passe la valeur isLoading à true et ',id)
@@ -48,7 +86,7 @@ export const apiFetchData = (url,id) => {
             .then((response) => response.json())
             .then((data) => {
                 console.log("DATA FETCH",data);
-                dispatch(dataIsSuccess(id,data));
+                dispatch(dataIsSuccess(id,data,scope));
                 dispatch(dataIsLoading(false,id));
             })
             .catch(() => dispatch(dataHasErrored(true)));

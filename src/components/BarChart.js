@@ -151,7 +151,7 @@ class BarChartComponent extends Component {
                                         mouseOutHandler={this.mouseOutHandler}
                                         mouseMoveHandler={this.mouseMoveHandler}
                                     />
-                                    <p class='legend'>{this.state.message}</p>
+                                    <p className='legend'>{this.state.message}</p>
                                     <Legend data={this.transformData(this.state.data.array, this.state.message)} dataId={this.state.key} horizontal config={this.state.config} />
                                     {(this.state.showToolTip) ?
                                         <ToolTip

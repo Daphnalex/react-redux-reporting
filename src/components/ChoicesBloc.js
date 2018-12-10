@@ -83,7 +83,7 @@ class ChoicesBloc extends Component {
           choiceGraph: ""
       });
       this.props.showAddingBloc();
-      this.props.apiFetchData(itemReporting.url,itemReporting.id);
+      this.props.apiFetchData(itemReporting.url,itemReporting.id,itemReporting.filterScope);
     }
 
     checkedElement = (element) => {
@@ -121,8 +121,8 @@ class ChoicesBloc extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        apiFetchData: (url,id) => {
-            dispatch(apiFetchData(url,id))
+        apiFetchData: (url,id,scope) => {
+            dispatch(apiFetchData(url,id,scope))
         }
     }
 }
