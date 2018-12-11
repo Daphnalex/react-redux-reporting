@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { PieChart } from 'react-easy-chart';
 
+import {Row, Col} from "react-materialize";
+
 import ToolTip from './ToolTips';
 import Legend from './Legend';
 import Filters from './FiltersComponent';
@@ -72,21 +74,21 @@ class PieChartComponent extends Component {
   transformData = (data) => {
     if(this.state.item.filterScope === 'global'){
       var newData = data.array.map((item, i) => {
-        console.log('item dans transformData', item)
+        //console.log('item dans transformData', item)
         return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
       });
     } else {
       var newData = data.map((item, i) => {
-        console.log('item dans transformData', item)
+        //console.log('item dans transformData', item)
         return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
       });
     }
 
     if (this.state.dataIsLoading) {
-      console.log('NEWDATA AVANT TRANSFORMATION',newData);
+      //console.log('NEWDATA AVANT TRANSFORMATION',newData);
       if ((this.state.item.filterDate === "day") && (newData.length > 30)) {
         //limit the table to the 30 last days
-        newData = newData.slice(data.length - 30, data.length);
+        newData = newData.slice(newData.length - 30, newData.length);
         //console.log('newData with filter day',newData);
         newData.map((item, i) => {
           item.color = this.state.config[i]
@@ -94,7 +96,7 @@ class PieChartComponent extends Component {
         // this.setState({message:  "les 30 derniers jours"})
       } else if ((this.state.item.filterDate === "month") && (newData.length > 12)) {
         //limit the table to the 12 last month
-        newData = newData.slice(data.length - 12, data.length);
+        newData = newData.slice(newData.length - 12, newData.length);
         //console.log('newData with filter month',newData);
         newData.map((item, i) => {
           item.color = this.state.config[i]
@@ -102,19 +104,20 @@ class PieChartComponent extends Component {
         // this.setState({message:  "les 12 derniers mois"});
       } else if ((this.state.item.filterDate === "year") && (newData.length > 10)) {
         //limit the table to the 10 last years
-        newData = newData.slice(data.length - 10, data.length);
+        newData = newData.slice(newData.length - 10, newData.length);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
         //console.log('newData with filter years',newData);)
         // this.setState({message:  "les 10 dernières années"})
       } else {
+        //console.log('ELSE DE TRANSFORMDATA')
         newData.map((item, i) => {
           item.color = this.state.config[i];
         })
       }
     }
-
+    //console.log('NEWDATA AVANT return',newData);
     return newData;
   }
 
@@ -154,23 +157,23 @@ class PieChartComponent extends Component {
   }
 
   render() {
-    //console.log('data props dans render Pie',this.state);
+    console.log('data props dans render Pie',this.state);
 
 
     return (
-      <div>
+      <Row>
         {this.state.dataIsLoading.bool ?
-          <div>
+          <Row>
             Donnée en cours de chargement
-                </div>
+          </Row>
           :
-          <div>
+          <Row>
             <h2>{this.state.item.describeElement.data} {this.state.item.describeElement.filterDate.toLowerCase()} ({this.state.item.describeElement.graph})</h2>
             <Filters item={this.state.item} />
             {this.state.item.filterScope === 'global' ?
-              <div key={`Pie${this.state.data.id}`}>
+              <Row>
                 {(this.state.data.id === this.state.item.id) ?
-                  <div>
+                  <Col l={6}>
                     <PieChart id={this.state.item.id}
                       data={this.transformData(this.state.data)}
                       innerHoleSize={200}
@@ -182,24 +185,23 @@ class PieChartComponent extends Component {
                     />
                     {/* <p class='legend'>{this.state.message}</p> */}
                     <Legend data={this.transformData(this.state.data)} dataId={this.state.key} horizontal config={this.state.config} />
-                    {(this.state.showToolTip) ?
+                    {(this.state.showToolTip) &&
                       <ToolTip
                         top={this.state.top}
                         left={this.state.left}
                         title={this.state.key}
                         value={this.state.value}
                       />
-                      :
-                      <div></div>}
-                  </div>
+                    }
+                  </Col>
                   :
-                  <div>Donnée non trouvée</div>
+                  <Row>Donnée non trouvée</Row>
                 }
-              </div>
+              </Row>
               :
-              <div>
+              <Row>
                 {this.state.data.array.map((item) => (
-                  <div>
+                  <Col l={6} key={`Pie-${this.state.data.id}${item[0].name}`}>
                     <PieChart id={item.id}
                       data={this.transformData(item, this.state.message)}
                       innerHoleSize={200}
@@ -209,25 +211,24 @@ class PieChartComponent extends Component {
                       padding={10}
                       styles={this.styles}
                     />
-                    <p class='legend'>{item[0].name}</p>
+                    <p className='legend'>{item[0].name}</p>
                     <Legend data={this.transformData(item, this.state.message)} dataId={this.state.key} horizontal config={this.state.config} />
-                    {(this.state.showToolTip) ?
+                    {(this.state.showToolTip) &&
                       <ToolTip
                         top={this.state.top}
                         left={this.state.left}
                         title={this.state.key}
                         value={this.state.value}
                       />
-                      :
-                      <div></div>}
-                  </div>
+                      }
+                  </Col>
                 ))}
-              </div>
+              </Row>
             }
 
-          </div>
+          </Row>
         }
-      </div>
+      </Row>
     )
   }
 }

@@ -34,7 +34,9 @@ h2{
   font-size: 18px;
   text-align: center;
   font-family: 'Open Sans', sans-serif;
-  margin-bottom: 20px;
+  margin: 0px !important;
+  padding: 20px;
+  background-color: #3fb0ac;
 }
 
 h3{
@@ -97,6 +99,8 @@ g.tick text{
 div.elementReporting{
   margin-bottom: 20px;
   margin-top: 20px;
+  border: 2px solid #3fb0ac;
+  padding: 0px !important;
 }
 
 span.selectChoiceElement{
@@ -127,3 +131,9 @@ p.legend{
   font-style: italic;
   text-align: center;
 }
+
+div.filter{
+  padding: 20px 20px 30px 20px;
+  background-color: #f1f0f1;
+}
+
