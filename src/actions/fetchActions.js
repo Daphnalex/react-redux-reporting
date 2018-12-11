@@ -62,6 +62,45 @@ export const dataIsSuccess = (id, data,scope) => {
                 type: DATA_FETCH_SUCCESS,
                 data: {array: newData, id: id}
             }
+        case "site":
+            console.log('scope site');
+            data.map((array) => {
+                array.children.map((client) =>{
+                    client.children.map((site) => {
+                        console.log('site',site);
+                        var siteElement = {id: array.id, name: site.name, result: site.result};
+                        newData = [...newData, siteElement];
+                    })
+                    
+                })
+            })
+            newData = groupBy(newData, 'name');
+            newData = Object.values(newData)
+            console.log('newData scope',newData)
+            return {
+                type: DATA_FETCH_SUCCESS,
+                data: {array: newData, id: id}
+            }
+        case "team":
+            console.log('scope team');
+            data.map((array) => {
+                array.children.map((client) =>{
+                    client.children.map((site) => {
+                        site.children.map((team) => {
+                            console.log('team',team);
+                            var teamElement = {id: array.id, name: team.name, result: team.result};
+                            newData = [...newData, teamElement];
+                        });
+                    });
+                });
+            });
+            newData = groupBy(newData, 'name');
+            newData = Object.values(newData)
+            console.log('newData scope',newData)
+            return {
+                type: DATA_FETCH_SUCCESS,
+                data: {array: newData, id: id}
+            }
     }
         
     

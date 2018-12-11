@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { PieChart } from 'react-easy-chart';
 
-import {Row, Col} from "react-materialize";
+import { Row, Col } from "react-materialize";
 
 import ToolTip from './ToolTips';
 import Legend from './Legend';
@@ -26,7 +26,7 @@ class PieChartComponent extends Component {
       data: this.props.data,
       dataIsLoading: this.props.dataIsLoading,
       item: this.props.item,
-      message: ""
+      message: ''
     }
     ////console.log('CONSTRUCTOR ID',this.state.id)
     this.mouseOverHandler = this.mouseOverHandler.bind(this);
@@ -47,12 +47,13 @@ class PieChartComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    //console.log('nextProps de Pie',nextProps);
+    console.log('nextProps de Pie',nextProps);
     this.setState({
       dataIsLoading: nextProps.dataIsLoading,
       data: nextProps.data,
       item: nextProps.item
-    })
+    });
+    this.testMessage(nextProps.item.filterDate);
   }
 
   componentWillMount() {
@@ -68,56 +69,64 @@ class PieChartComponent extends Component {
         //console.log('this.state.config',this.state.config);
       })
     }
-
+    this.testMessage(this.props.item.filterDate);
   }
 
-  transformData = (data) => {
-    if(this.state.item.filterScope === 'global'){
+  testMessage(date){
+    console.log('date testmessage',date)
+    if (date === "day"){
+      this.setState({
+        message: 'les 30 derniers jours (maximum)'
+      })
+    } else if (date === "month"){
+      this.setState({
+        message: 'les 12 derniers mois (maximum)'
+      })
+    } else {
+      this.setState({
+        message: 'les 10 dernières années (maximum)'
+      })
+    }
+  }
+
+  transformData = (data, message) => {
+    var newMessage = '';
+    if (this.state.item.filterScope === 'global') {
       var newData = data.array.map((item, i) => {
-        //console.log('item dans transformData', item)
         return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
       });
     } else {
       var newData = data.map((item, i) => {
-        //console.log('item dans transformData', item)
         return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
       });
     }
 
     if (this.state.dataIsLoading) {
-      //console.log('NEWDATA AVANT TRANSFORMATION',newData);
       if ((this.state.item.filterDate === "day") && (newData.length > 30)) {
-        //limit the table to the 30 last days
         newData = newData.slice(newData.length - 30, newData.length);
-        //console.log('newData with filter day',newData);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        // this.setState({message:  "les 30 derniers jours"})
+        newMessage = 'les 30 derniers jours';
       } else if ((this.state.item.filterDate === "month") && (newData.length > 12)) {
-        //limit the table to the 12 last month
         newData = newData.slice(newData.length - 12, newData.length);
-        //console.log('newData with filter month',newData);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        // this.setState({message:  "les 12 derniers mois"});
+        newMessage = 'les 12 derniers mois';
       } else if ((this.state.item.filterDate === "year") && (newData.length > 10)) {
-        //limit the table to the 10 last years
         newData = newData.slice(newData.length - 10, newData.length);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        //console.log('newData with filter years',newData);)
-        // this.setState({message:  "les 10 dernières années"})
+        newMessage = 'les 10 dernières années';
       } else {
-        //console.log('ELSE DE TRANSFORMDATA')
         newData.map((item, i) => {
           item.color = this.state.config[i];
         })
       }
     }
-    //console.log('NEWDATA AVANT return',newData);
+    
     return newData;
   }
 
@@ -157,7 +166,7 @@ class PieChartComponent extends Component {
   }
 
   render() {
-    console.log('data props dans render Pie',this.state);
+    console.log('data props dans render Pie', this.state);
 
 
     return (
@@ -175,7 +184,7 @@ class PieChartComponent extends Component {
                 {(this.state.data.id === this.state.item.id) ?
                   <Col l={6}>
                     <PieChart id={this.state.item.id}
-                      data={this.transformData(this.state.data)}
+                      data={this.transformData(this.state.data,this.state.message)}
                       innerHoleSize={200}
                       mouseOverHandler={this.mouseOverHandler}
                       mouseOutHandler={this.mouseOutHandler}
@@ -183,8 +192,8 @@ class PieChartComponent extends Component {
                       padding={10}
                       styles={this.styles}
                     />
-                    {/* <p class='legend'>{this.state.message}</p> */}
-                    <Legend data={this.transformData(this.state.data)} dataId={this.state.key} horizontal config={this.state.config} />
+                    <p className='legend'>{this.state.message}</p>
+                    <Legend data={this.transformData(this.state.data,this.state.message)} dataId={this.state.key} horizontal config={this.state.config} />
                     {(this.state.showToolTip) &&
                       <ToolTip
                         top={this.state.top}
@@ -212,6 +221,7 @@ class PieChartComponent extends Component {
                       styles={this.styles}
                     />
                     <p className='legend'>{item[0].name}</p>
+                    <p className='legend'>{this.state.message}</p>
                     <Legend data={this.transformData(item, this.state.message)} dataId={this.state.key} horizontal config={this.state.config} />
                     {(this.state.showToolTip) &&
                       <ToolTip
@@ -220,7 +230,7 @@ class PieChartComponent extends Component {
                         title={this.state.key}
                         value={this.state.value}
                       />
-                      }
+                    }
                   </Col>
                 ))}
               </Row>
