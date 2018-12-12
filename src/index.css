@@ -37,7 +37,7 @@ h2{
   font-family: 'Open Sans', sans-serif;
   margin: 0px !important;
   padding: 20px;
-  background-color: #3fb0ac;
+  background-color: #173e43;
 }
 
 h3{
@@ -100,7 +100,7 @@ g.tick text{
 div.elementReporting{
   margin-bottom: 20px;
   margin-top: 20px;
-  border: 2px solid #3fb0ac;
+  border: 2px solid #173e43;
   padding: 0px !important;
 }
 
@@ -111,7 +111,7 @@ span.selectChoiceElement{
 .tooltip{
   display: block;
   top:0px;
-  background-color: #f1f0f1;
+  background-color: #dddfd4;
   color: grey;
   text-align: center;
 }
@@ -135,6 +135,6 @@ p.legend{
 
 div.filter{
   padding: 20px 20px 30px 20px;
-  background-color: #f1f0f1;
+  background-color: #dddfd4;
 }
 

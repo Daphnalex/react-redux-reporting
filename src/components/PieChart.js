@@ -61,12 +61,9 @@ class PieChartComponent extends Component {
     var config = []
     for (let i = 0; i < 100; i++) {
       color = this.props.getRandomColor();
-      //console.log('color dans will mount',color);
       config.push(color);
       this.setState({
         config: config
-      }, function () {
-        //console.log('this.state.config',this.state.config);
       })
     }
     this.testMessage(this.props.item.filterDate);
@@ -90,7 +87,6 @@ class PieChartComponent extends Component {
   }
 
   transformData = (data, message) => {
-    var newMessage = '';
     if (this.state.item.filterScope === 'global') {
       var newData = data.array.map((item, i) => {
         return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
@@ -107,19 +103,16 @@ class PieChartComponent extends Component {
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        newMessage = 'les 30 derniers jours';
       } else if ((this.state.item.filterDate === "month") && (newData.length > 12)) {
         newData = newData.slice(newData.length - 12, newData.length);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        newMessage = 'les 12 derniers mois';
       } else if ((this.state.item.filterDate === "year") && (newData.length > 10)) {
         newData = newData.slice(newData.length - 10, newData.length);
         newData.map((item, i) => {
           item.color = this.state.config[i]
         });
-        newMessage = 'les 10 dernières années';
       } else {
         newData.map((item, i) => {
           item.color = this.state.config[i];
