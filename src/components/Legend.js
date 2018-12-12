@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Style } from 'radium';
 
 const legendStyles = {
@@ -34,7 +33,7 @@ class Legend extends React.Component {
 
 
   getList() {
-    console.log('this.props.data LEGEND',this.props.data)
+    //console.log('this.props.data LEGEND',this.props.data)
     return (
       this.props.data.map(
         (item, index) => {
@@ -52,7 +51,7 @@ class Legend extends React.Component {
   }
 
   render() {
-    console.log("DANS LEGEND data",this.props.data)
+    //console.log("DANS LEGEND data",this.props.data)
     return (
       <div className="legend-container">
         <Style scopeSelector=".legend-container" rules={legendStyles} />

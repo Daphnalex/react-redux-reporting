@@ -17,24 +17,22 @@ export default class ArrayComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log('nextProps de Pie', nextProps);
         this.setState({
             dataIsLoading: nextProps.dataIsLoading,
             data: this.transformData(nextProps.data),
             item: nextProps.item,
         });
         this.testMessage(nextProps.item.filterDate);
+        this.transformData(nextProps.data);
     }
 
     componentWillMount() {
         this.testMessage(this.props.item.filterDate);
-        this.setState({ data: this.transformData(this.props.data) })
     }
 
 
 
     testMessage(date) {
-        console.log('date testmessage', date)
         if (date === "day") {
             this.setState({
                 message: 'les 30 derniers jours (maximum)'
@@ -51,72 +49,59 @@ export default class ArrayComponent extends Component {
     }
 
     transformData = (data, message) => {
-        console.log('data in transformData',data);
-        if (this.state.item.filterScope === 'global') {
-            var newData = data.array.map((item, i) => {
-              return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
-            });
-          } else {
-            var newData = data.array.map((item, i) => {
-                console.log('item dans boucle',item);
-                return item.map((element) => {
-                    return { name: element.name, key: this.props.formatDate(element.id), value: element.result, color: '' }
-            
-                })
-              });
-          }
-          
+        if (this.props.dataIsLoading) {
+            var newData = [];
+            if (this.state.item.filterScope === 'global') {
+                newData = data.array.map((item, i) => {
+                    return { name: item.name, key: this.props.formatDate(item.id), value: item.result, color: '' }
+                });
+            } else {
+                newData = data.array.map((item, i) => {
+                    return item.map((element) => {
+                        return { name: element.name, key: this.props.formatDate(element.id), value: element.result, color: '' }
 
-        if (this.state.dataIsLoading) {
-            
-            console.log('newData avant condition',newData[0].length);
+                    })
+                });
+            }
             //test if newData is a array of array or array of object
-            if(typeof(newData[0].length)==='undefined'){
-                if(this.state.item.filterDate ==="day"){
+            if (typeof (newData[0].length) === 'undefined') {
+                if (this.state.item.filterDate === "day") {
                     newData = newData.slice(newData.length - 30, newData.length);
-                } else if (this.state.item.filterDate === "month"){
+                } else if (this.state.item.filterDate === "month") {
                     newData = newData.slice(newData.length - 12, newData.length);
                 } else {
                     newData = newData.slice(newData.length - 10, newData.length);
                 }
-                
+
             } else {
                 if (this.state.item.filterDate === "day") {
-                    return newData.map((item)=>{
-                        console.log('item avant slice day',item)
+                    return newData.map((item) => {
                         item = item.slice(item.length - 30, item.length);
-                        console.log("item dans day filter",item);
                         return item;
                     })
                 } else if (this.state.item.filterDate === "month") {
-                    return newData.map((item)=>{
-                        console.log('item avant slice month',item)
+                    return newData.map((item) => {
                         item = item.slice(item.length - 12, item.length);
-                        console.log("item dans month filter",item);
                         return item;
                     })
-                } else if (this.state.item.filterDate === "year"){
-                    return newData.map((item)=>{
-                        console.log('item avant slice year',item)
+                } else if (this.state.item.filterDate === "year") {
+                    return newData.map((item) => {
                         item = item.slice(item.length - 10, item.length);
-                        console.log("item dans year filter",item);
                         return item;
                     });
                 }
-            } 
+            }
         }
-        console.log('NEWDATA AVANT RETURN',newData);
         return newData;
     }
 
     render() {
-        console.log('item', this.state.data)
         return (
             <Row>
                 {this.state.dataIsLoading.bool ?
                     <Row>
                         Donnée en cours de chargement
-          </Row>
+                     </Row>
                     :
                     <Row>
                         <h2>{this.state.item.describeElement.data} {this.state.item.describeElement.filterDate.toLowerCase()} ({this.state.item.describeElement.graph})</h2>

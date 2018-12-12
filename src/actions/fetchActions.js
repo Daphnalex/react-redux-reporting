@@ -49,10 +49,11 @@ export const dataIsSuccess = (id, data,scope) => {
         case 'client':
             console.log('scope client');
             data.map((array) => {
-                array.children.map((client) =>{
+                return array.children.map((client) =>{
                     console.log('client',client);
                     var clientElement = {id: array.id, name: client.name, result: client.result};
                     newData = [...newData, clientElement];
+                    return newData;
                 })
             })
             newData = groupBy(newData, 'name');
@@ -65,11 +66,12 @@ export const dataIsSuccess = (id, data,scope) => {
         case "site":
             console.log('scope site');
             data.map((array) => {
-                array.children.map((client) =>{
-                    client.children.map((site) => {
+                return array.children.map((client) =>{
+                    return client.children.map((site) => {
                         console.log('site',site);
                         var siteElement = {id: array.id, name: site.name, result: site.result};
                         newData = [...newData, siteElement];
+                        return newData;
                     })
                     
                 })
@@ -84,12 +86,13 @@ export const dataIsSuccess = (id, data,scope) => {
         case "team":
             console.log('scope team');
             data.map((array) => {
-                array.children.map((client) =>{
-                    client.children.map((site) => {
-                        site.children.map((team) => {
+                return array.children.map((client) =>{
+                    return client.children.map((site) => {
+                        return site.children.map((team) => {
                             console.log('team',team);
                             var teamElement = {id: array.id, name: team.name, result: team.result};
                             newData = [...newData, teamElement];
+                            return newData;
                         });
                     });
                 });
@@ -100,6 +103,12 @@ export const dataIsSuccess = (id, data,scope) => {
             return {
                 type: DATA_FETCH_SUCCESS,
                 data: {array: newData, id: id}
+            }
+        default:
+            console.log('scope global');
+            return {
+                type: DATA_FETCH_SUCCESS,
+                data: {array: data, id: id}
             }
     }
         

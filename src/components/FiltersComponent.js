@@ -30,12 +30,6 @@ class Filters extends Component {
   componentWillReceiveProps(nextProps){
     ////console.log('NEXTPROPS filters',nextProps); 
   }
-
-  //database is fake and it's old database so we define a old date to current date
-  simulateCurrentDate(){
-    const currentDate = new Date('2017-12-26T04:41:20');
-    
-  }
   
 
   testFilterDate = (date) => {

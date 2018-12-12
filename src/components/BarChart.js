@@ -24,7 +24,6 @@ class BarChartComponent extends Component {
             config: [],
             data: this.props.data,
             dataIsLoading: this.props.dataIsLoading,
-            item: this.props.item,
             message: ""
         }
         this.mouseOverHandler = this.mouseOverHandler.bind(this);
@@ -34,7 +33,6 @@ class BarChartComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        //console.log('nextProps de Pie', nextProps);
         this.setState({
             dataIsLoading: nextProps.dataIsLoading,
             data: nextProps.data,
@@ -59,7 +57,6 @@ class BarChartComponent extends Component {
 
 
     testMessage(date) {
-        console.log('date testmessage', date)
         if (date === "day") {
             this.setState({
                 message: 'les 30 derniers jours (maximum)'
@@ -76,12 +73,13 @@ class BarChartComponent extends Component {
     }
 
     transformData = (data, message) => {
+        var newData = [];
         if (this.state.item.filterScope === 'global') {
-            var newData = data.array.map((item, i) => {
+            newData = data.array.map((item, i) => {
                 return { name: item.name, x: this.props.formatDate(item.id), y: item.result, color: '' }
             });
         } else {
-            var newData = data.map((item, i) => {
+            newData = data.map((item, i) => {
                 return { name: item.name, x: this.props.formatDate(item.id), y: item.result, color: '' }
             });
         }
@@ -90,21 +88,25 @@ class BarChartComponent extends Component {
             if ((this.state.item.filterDate === "day") && (newData.length > 30)) {
                 newData = newData.slice(newData.length - 30, newData.length);
                 newData.map((item, i) => {
-                    item.color = this.state.config[i]
+                    item.color = this.state.config[i];
+                    return item;
                 });
             } else if ((this.state.item.filterDate === "month") && (newData.length > 12)) {
                 newData = newData.slice(newData.length - 12, newData.length);
                 newData.map((item, i) => {
-                    item.color = this.state.config[i]
+                    item.color = this.state.config[i];
+                    return item;
                 });
             } else if ((this.state.item.filterDate === "year") && (newData.length > 10)) {
                 newData = newData.slice(newData.length - 10, newData.length);
                 newData.map((item, i) => {
-                    item.color = this.state.config[i]
+                    item.color = this.state.config[i];
+                    return item;
                 });
             } else {
                 newData.map((item, i) => {
-                    item.color = this.state.config[i];
+                   item.color = this.state.config[i];
+                   return item;
                 })
             }
         }
@@ -133,7 +135,6 @@ class BarChartComponent extends Component {
     }
 
     render() {
-        //console.log('data props dans render Pie',this.props.data);
         return (
             <Row>
                 {this.state.dataIsLoading.bool ?
