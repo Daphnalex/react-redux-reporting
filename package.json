@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "d3": "^5.7.0",
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
     "prop-types": "^15.6.2",
     "radium": "^0.25.0",
     "react": "^16.6.3",
@@ -31,5 +33,23 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Daphnalex/react-redux-reporting.git"
+  },
+  "keywords": [
+    "reporting",
+    "graphic",
+    "usage"
+  ],
+  "author": "daphné",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Daphnalex/react-redux-reporting/issues"
+  },
+  "homepage": "https://github.com/Daphnalex/react-redux-reporting#readme"
 }

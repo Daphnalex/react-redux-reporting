@@ -19,7 +19,7 @@ class ReportingList extends Component {
     }
 
     formatDate = (input) => {
-        console.log('input',input);
+        //console.log('input',input);
         var datePart = input.match(/\d+/g);
         if (datePart.length === 1){
             return input
